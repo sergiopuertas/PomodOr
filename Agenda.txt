@@ -1,0 +1,10 @@
+This file is like an agenda to put notes on progress, doubts and to-dos.
+
+Sergio:
+    Hacer que al pulsar el botón el current order de la lista cambie al que dijiste.
+    Pensar algoritmo para definir urgencia.
+    Revisar estructura y patrones
+    Revisar constructores
+    Aprender stateful Widgets (vídeo: https://youtu.be/p5dkB3Mrxdo?si=_XDi8pOoD8Ac-4F4)
+        Importante para empezar a hacer la to-do list que se mueva y a que cambie la pantalla al escoger el orden
+    Poner bonita la screen
