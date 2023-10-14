@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 
 class Task implements Comparable{
-  var String _name;
-  var bool _finished;
-  var DateTime _expDate;
-  var int _diff;
-  var int _urgency;
-  var String _subject;
+  String _name;
+  bool _finished;
+  DateTime _expDate;
+  int _diff;
+  int _urgency;
+  String _subject;
   List<String> _notesList = [];
 
-  Task(var name,var expDate,var diff, var subject) {
-    this._urgency = this.computeDifficulty();
+  Task(String name,DateTime expDate,int diff, String subject) {
     this._name = name;
     this._finished = false;
     this._diff = diff;
     this._expDate = expDate;
     this._subject = subject;
+    this._urgency = this.computeDifficulty(expDate,diff);
   }
 
-  int computeDifficulty(){
-    var float value = 0;
-    // insert algorithm here: value = ...
-    _urgency.setValue(value);
-    return _urgency;
+  int computeDifficulty(var expDate, var diff){
+    double remainingTimeRatio = min(1, _expDate.difference(DateTime.now()).inDays / 7);
+    double urgencyValue = (remainingTimeRatio + diff / 5) / 2;
+    if (urgencyValue <= 0.33) {
+      return 1;
+    } else if (urgencyValue <= 0.66) {
+      return 2;
+    } else {
+      return 3;
+    }
   }
   List<String> getNoteList() {
     return this._notesList;

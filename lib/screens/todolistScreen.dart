@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:pomodor/toDoList/'
+//import '../toDoList/TaskList.dart';
 void main() {
   runApp(MaterialApp(
     home: todolistScreen(),
   )
   );
 }
-class todolistScreen extends StatelessWidget {
+
+class todolistScreen extends StatefulWidget {
+  const todolistScreen({super.key});
+  @override
+  State<todolistScreen> createState() => _TestState();
+}
+
+class _TestState extends State<todolistScreen> {
+
   @override
   Widget build(BuildContext context) {
-    return Stack( // <-- STACK AS THE SCAFFOLD PARENT
+    return Stack(
       children: [
         Container(
           decoration: BoxDecoration(
@@ -23,7 +31,7 @@ class todolistScreen extends StatelessWidget {
           null,
         ),
         Scaffold(
-          backgroundColor: Colors.transparent, // <-- SCAFFOLD WITH TRANSPARENT BG
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: Text(
               'TO-DO LIST',
@@ -35,59 +43,98 @@ class todolistScreen extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            backgroundColor: Colors.transparent, // <-- APPBAR WITH TRANSPARENT BG
+            backgroundColor: Colors.transparent,
             elevation: 0, // <-- ELEVATION ZEROED
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              OverflowBar(
-                alignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0),
-                    child: Text(
-                      'Order by:',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget> [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0),
+                      child: Text(
+                        'Here you can find all your tasks left',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                  ),
-                  TextButton( child: const Text(
-                    'Date',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey,
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0),
+                      child: Text(
+                        'Feel free to order them as you like',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                  ), onPressed: () {
-                    // list.selectOrder(dateOrder);
-                  }),
-                  TextButton( child: const Text(
-                    'Urgency',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey,
+                    /*Padding(
+                      padding: EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0),
+                      child: Text(
+                      'Good luck!',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),*/
+                    OverflowBar(
+                      alignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        /*Padding(
+                          padding: EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0),
+                          child: Text(
+                            'Order by:',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),*/
+                        TextButton( child: const Text(
+                          'Date',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey,
+                          ),
+                        ), onPressed: () {
+                          // list.selectOrder(dateOrder);
+                        }),
+                        TextButton( child: const Text(
+                          'Urgency',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey,
+                          ),
+                        ), onPressed: () {
+                          // list.selectOrder(urgencyOrder);
+                        }),
+                        TextButton( child: const Text(
+                          'Subject',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey,
+                          ),
+                        ), onPressed: () {
+                          // list.selectOrder(urgencyOrder);
+                        }),
+                      ],
                     ),
-                  ), onPressed: () {
-                    // list.selectOrder(urgencyOrder);
-                  }),
-                  TextButton( child: const Text(
-                    'Subject',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey,
-                    ),
-                  ), onPressed: () {
-                    // list.selectOrder(urgencyOrder);
-                  }),
-                ],
+                  ],
+                ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -106,3 +153,4 @@ class todolistScreen extends StatelessWidget {
     );
   }
 }
+
