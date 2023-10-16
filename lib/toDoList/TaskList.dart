@@ -1,29 +1,24 @@
 import 'package:flutter/material.dart';
 //import 'package:intl/intl.dart';
-//import 'task.dart';
+import 'Task.dart';
+import 'tasksProvider.dart'
 
-void main() {
-  runApp(MaterialApp(
-    home: TaskList(),
-    )
-  );
-}
-
-class TaskList extends StatefulWidget {
-  static final TaskList _singleton = TaskList._internal();
-
-  factory TaskList() {
-    return _singleton;
-  }
-  TaskList._internal();
+class TaskListItem extends ConsumerWidget {
   @override
-  _TaskListState createState() => _TaskListState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    var tasks = ref.watch(tasksProvider);
+
+    return Column(
+      children: tasks.map(
+            (task) => TaskItem(task: task),
+      )
+          .toList(),
+    );
+  }
 }
-
-class _TaskListState extends State<TaskList> {
+class TaskList{
   List<String> _subjectList = ['md', 'so'];
-
-  /*List<Task> _tasks = [];
+  List<Task> _tasks = [];
 
   void addTask(String name, var expDate, int diff, String subject) {
     //mirar si ya hay una instancia de esa task y lo de null y tal
@@ -41,22 +36,5 @@ class _TaskListState extends State<TaskList> {
   }
   void order(var param){
     _tasks.sort((task1, task2) => task1.param.compareTo(task2.param));
-  }
-  */
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children:<Widget>[
-          SizedBox(height: 40.0),
-          Column(
-            children:_subjectList.map((subj) => Text(subj)
-            ).toList(),
-          )
-        ]
-      ),
-    );
   }
 }
