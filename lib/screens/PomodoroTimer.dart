@@ -38,14 +38,19 @@ class _PomodoroTimerState extends State<PomodoroTimer>{
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                IconButton(
-                icon: Icon(Icons.stop),
-                onPressed: null,
+                ElevatedButton(
+                  child: Icon(Icons.stop),
+                  onPressed: null,
                 ),
-                IconButton(
-                icon: Icon(Icons.pause),
-                onPressed: null,
+                ElevatedButton(
+                  child: Icon(Icons.play_arrow),
+                  onPressed : null
                 ),
+                ElevatedButton(
+                  child: Icon(Icons.pause),
+                  onPressed: null
+                ),
+                
              ]
             )
 
