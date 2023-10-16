@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'PomodoroHome.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: Home(),
-    )
-  );
+  runApp(const MyApp());
 }
-class Home extends StatelessWidget {
+
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      title : 'Pomod\'or',
+      debugShowCheckedModeBanner: false,
+      theme : ThemeData.light(),
+      home : const PomodoroHome()
+      );
+  }
 }
