@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'tasksProvider.dart';
 import 'Urgency.dart';
-//import 'package:intl/intl.dart';
+import 'dart:math';
+import 'package:intl/intl.dart';
 class TaskItem extends ConsumerWidget {
   final Task task;
 
@@ -13,8 +15,8 @@ class TaskItem extends ConsumerWidget {
       children: [
         Checkbox(
           onChanged: (newValue) =>
-              ref.read(tasksProvider.notifier).toggle(task.id),
-          value: task.completed,
+              ref.read(tasksProvider.notifier).toggle(task.getName()),
+          value: task._finished,
         ),
         Container(
           color: task._urgency.color,
@@ -29,14 +31,14 @@ class TaskItem extends ConsumerWidget {
             ),
           ),
         ),
-        ElevatedButton.icon(
+        /*ElevatedButton.icon(
             onPressed: /*función para desplegar notas*/,
             icon: Icon(
               Icons.textsms_rounded,
               color: Colors.white70,
               size: 24.0,
             ) ,
-        ),
+        ),*/
       ],
     );
   }
@@ -44,25 +46,35 @@ class TaskItem extends ConsumerWidget {
 
 @immutable
 class Task {
-  String _name;
-  bool _finished;
-  DateTime _expDate;
-  int _diff;
-  Urgency _urgency;
-  String _subject;
+  String _name ='';
+  bool _finished = false;
+  DateTime _expDate = DateTime.now();
+  int _diff = 0;
+  Urgency _urgency = Urgency(0);
+  String _subject = '';
   List<String> _notesList = [];
-  final bool completed;
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-  Task({required this._name, required this._subject,required this._expDate,required this._diff, this.finished = false});
+  Task(String name,  String subject,  DateTime expDate,  int diff){
+    _name = name;
+    _subject = subject;
+    _expDate = expDate;
+    _diff = diff;
+    _finished = false;
+    _urgency = _calculateUrgency(expDate, diff);
+  }
+  Task copyWith({
+    String? name,
+    String? subject,
+    int? diff,
+    DateTime? expDate,
+    bool? finished,
+  }) {
+    return Task(name ?? this._name, subject ?? this._subject, expDate ?? this._expDate,diff ?? this._diff);
 
-  Task copyWith({String? name, String? subject, int? diff,DateTime? expDate, bool? finished}) {
-    return Task(
-        _name: name ?? this._name,
-        _subject: subject??this._subject,
-        _diff: diff??this._diff,
-        _expDate: expDate ?? this._expDate,
-        _finished: finished ?? this._finished),
-        _urgency: Urgency (this.computeUrgency (expDate ?? this._expDate,diff??this._diff));
+  }
+  Urgency _calculateUrgency(DateTime expDate, int diff) {
+    return Urgency(computeUrgency(expDate, diff));
   }
   int computeUrgency(var expDate, var diff){
     double remainingTimeRatio = min(1, _expDate.difference(DateTime.now()).inDays / 7);
@@ -74,6 +86,9 @@ class Task {
     } else {
       return 3;
     }
+  }
+  bool getIfFinished(){
+    return this._finished;
   }
   List<String> getNoteList() {
     return this._notesList;
@@ -90,7 +105,7 @@ class Task {
   int getDiff(){
     return this._diff;
   }
-  int getUrgency(){
+  Urgency getUrgency(){
     return this._urgency;
   }
   void markFinished(){

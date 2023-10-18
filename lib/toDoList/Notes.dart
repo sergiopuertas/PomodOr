@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 // Define a custom Form widget.
 class MyCustomForm extends StatefulWidget {
   const MyCustomForm({super.key});
@@ -22,11 +21,8 @@ class MyCustomForm extends StatefulWidget {
   State<MyCustomForm> createState() => _MyCustomFormState();
 }
 
-// Define a corresponding State class.
-// This class holds the data related to the Form.
 class _MyCustomFormState extends State<MyCustomForm> {
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
+
   final myController = TextEditingController();
   final List<String> notes = [''];
 
@@ -36,7 +32,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     myController.dispose();
     super.dispose();
   }
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // usar sliding list para esto.
     notes.add(myController.text);
     myController.clear();
     return TextButton(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Urgency{
-  int num;
-  Color color;
+  int number = 0;
+  Color color = Colors.white;
   Urgency(int num){
-    num = num;
+    number = num;
     color = setColor(num);
-  };
+  }
   Color setColor(var num){
     if(num == 1) return Colors.green;
     else if (num == 2) return Colors.yellow;

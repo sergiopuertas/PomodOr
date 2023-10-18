@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-//import '../toDoList/TaskList.dart';
+import '../toDoList/TaskList.dart';
+import '../toDoList/SlidingList.dart';
+import '../toDoList/MyCheckBox.dart';
+
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    scrollBehavior: const ConstantScrollBehavior(),
     home: todolistScreen(),
   )
   );
@@ -17,6 +22,7 @@ class _TestState extends State<todolistScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Stack(
       children: [
         Container(
@@ -134,20 +140,14 @@ class _TestState extends State<todolistScreen> {
                   ],
                 ),
               ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                      color: Colors.cyan,
-                      padding: EdgeInsets.all(30.0),
-                      child: Text('inside container')
-                  ),
-                ],
+              Container(
+                height:500,
+                padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 60.0),
+                child: SlidingList(),
               ),
             ],
           ),
+
         ),
       ],
     );

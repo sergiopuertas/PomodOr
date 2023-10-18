@@ -1,4 +1,5 @@
 import 'Task.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final tasksProvider = StateNotifierProvider<TaskNotifier, List<Task>>((ref) {
   return TaskNotifier(tasks: []);
@@ -10,11 +11,11 @@ class TaskNotifier extends StateNotifier<List<Task>> {
     state = [...state, task];
   }
 
-  void toggle(int taskId) {
+  void toggle(String taskname) {
     state = [
       for (final item in state)
-        if (taskId == item.id)
-          item.copyWith(completed: !item.completed)
+        if (taskname == item.getName())
+          item.copyWith(finished: !item.getIfFinished())
         else
           item
     ];
