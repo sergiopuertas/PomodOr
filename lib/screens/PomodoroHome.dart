@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'PomodoroBody.dart';
+import 'PomodoroHomeBody.dart';
 
 class PomodoroHome extends StatefulWidget{
   const PomodoroHome({super.key});
@@ -22,7 +22,7 @@ class _PomodoroHomeState extends State<PomodoroHome>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: topBar,
-      body : const PomodoroBody(),
+      body : const PomodoroHomeBody(),
       bottomNavigationBar: Container(
         color : Colors.white,
         height : 50.0,

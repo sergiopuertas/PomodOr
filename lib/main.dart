@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomodor/screens/PomodoroHome.dart';
+import 'package:pomodor/screens/RouteGenerator.dart';
 
 
 void main() {
@@ -12,10 +13,11 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      onGenerateRoute: RouteGenerator.generateRoute,
       title : 'Pomod\'or',
       debugShowCheckedModeBanner: false,
       theme : ThemeData.light(),
-      home : const PomodoroHome()
+      initialRoute: '/page1',
       );
   }
 }
