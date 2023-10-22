@@ -15,11 +15,13 @@ class PomodoroChoice extends StatelessWidget{
             TextButton(
               child:  Text("25-5") ,
               onPressed : (){
+                //choice = 1
               }
             ),
             TextButton(
               child:  Text("Personalised") ,
               onPressed : (){
+                //choice = 2
                 Navigator.pushNamed(context, '/page5');
               }
             )

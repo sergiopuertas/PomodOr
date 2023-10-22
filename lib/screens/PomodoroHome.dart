@@ -9,19 +9,14 @@ class PomodoroHome extends StatefulWidget{
 }
 
 class _PomodoroHomeState extends State<PomodoroHome>{
-  final topBar = AppBar(
-    backgroundColor : Colors.blue,
-    centerTitle : true,
-    elevation : 1.0,
-    title : const Text('Rest time'),
-    actions : const <Widget>[
-    ]
-  );
-
+  
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: topBar,
+      appBar: AppBar(
+        title : const Text('POMOD\'OR'),
+        centerTitle: true ,
+      ),
       body : const PomodoroHomeBody(),
       bottomNavigationBar: Container(
         color : Colors.white,

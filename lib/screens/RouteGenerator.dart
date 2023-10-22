@@ -4,6 +4,7 @@ import 'package:pomodor/screens/PomodoroHome.dart';
 import 'package:pomodor/screens/PomodoroPersonalisedTime.dart';
 import 'package:pomodor/screens/PomodoroRestTime.dart';
 import 'package:pomodor/screens/PomodoroWorkTime.dart';
+import 'package:pomodor/screens/todolistScreen.dart';
 
 
 
@@ -21,6 +22,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PomodoroRestTime());
       case '/page5':
         return MaterialPageRoute(builder: (_) => PomodoroPersonalisedTime());
+      case '/page6':
+        return MaterialPageRoute(builder: (_) => todolistScreen());
 
       default : 
         return MaterialPageRoute(builder: (_) => PomodoroHome());

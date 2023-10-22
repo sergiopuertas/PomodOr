@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget{
       title : 'Pomod\'or',
       debugShowCheckedModeBanner: false,
       theme : ThemeData.light(),
-      initialRoute: '/page1',
+      home: PomodoroHome(),
+      //initialRoute: '/page1',
       );
   }
 }
