@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PomodoroChoice extends StatelessWidget{
-  const PomodoroChoice({super.key});
+class Choice extends StatelessWidget{
+  const Choice({super.key});
 
    @override
   Widget build(BuildContext context){
@@ -15,11 +15,13 @@ class PomodoroChoice extends StatelessWidget{
             TextButton(
               child:  Text("25-5") ,
               onPressed : (){
+                //choice = 1
               }
             ),
             TextButton(
               child:  Text("Personalised") ,
               onPressed : (){
+                //choice = 2
                 Navigator.pushNamed(context, '/page5');
               }
             )

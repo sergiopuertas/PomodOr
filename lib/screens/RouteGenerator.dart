@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pomodor/screens/PomodorChoice.dart';
-import 'package:pomodor/screens/PomodoroHome.dart';
-import 'package:pomodor/screens/PomodoroPersonalisedTime.dart';
-import 'package:pomodor/screens/PomodoroRestTime.dart';
-import 'package:pomodor/screens/PomodoroWorkTime.dart';
+import 'package:pomodor/screens/Choice.dart';
+import 'package:pomodor/screens/Home.dart';
+import 'package:pomodor/screens/PersonalisedTime.dart';
+import 'package:pomodor/screens/RestTime.dart';
+import 'package:pomodor/screens/WorkTime.dart';
+import 'package:pomodor/screens/todolistScreen.dart';
 
 
 
@@ -12,18 +13,20 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/page1':
-        return MaterialPageRoute(builder: (_) => PomodoroHome());
+        return MaterialPageRoute(builder: (_) => Home());
       case '/page2':
-        return MaterialPageRoute(builder: (_) => PomodoroChoice());
+        return MaterialPageRoute(builder: (_) => Choice());
       case '/page3':
-        return MaterialPageRoute(builder: (_) => PomodoroWorkTime());
+        return MaterialPageRoute(builder: (_) => WorkTime());
       case '/page4':
-        return MaterialPageRoute(builder: (_) => PomodoroRestTime());
+        return MaterialPageRoute(builder: (_) => RestTime());
       case '/page5':
-        return MaterialPageRoute(builder: (_) => PomodoroPersonalisedTime());
+        return MaterialPageRoute(builder: (_) => PersonalisedTime());
+      case '/page6':
+        return MaterialPageRoute(builder: (_) => todolistScreen());
 
       default : 
-        return MaterialPageRoute(builder: (_) => PomodoroHome());
+        return MaterialPageRoute(builder: (_) => Home());
 
     }
   }
