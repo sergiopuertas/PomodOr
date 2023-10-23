@@ -1,4 +1,4 @@
-import 'Task.dart';
+import '../Task.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final tasksProvider = StateNotifierProvider<TaskNotifier, List<Task>>((ref) {

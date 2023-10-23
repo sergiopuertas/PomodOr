@@ -1,6 +1,7 @@
 This file is like an agenda to put notes on progress, doubts and to-dos.
 
 Sergio:
+    toquetear a.dart para que se parezca a lo q queremos. Mirar videos de statefull widgets
     Hacer con las Notes igual que con las tasks: cada note tiene una checkbox que si le pinchas desaparece. Importante imprimir lista de notas encima de la linea de inserción d texto. Convertir pantalla de escribir en popup
     Empezar a hacer que cambie la pantalla al escoger el orden
     Revisar estructura y patrones: observador!

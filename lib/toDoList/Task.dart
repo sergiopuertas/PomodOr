@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'tasksProvider.dart';
+import './Providers/tasksProvider.dart';
 import 'Urgency.dart';
 import 'dart:math';
 import 'package:intl/intl.dart';

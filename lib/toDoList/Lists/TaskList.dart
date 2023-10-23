@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'Task.dart';
-import 'tasksProvider.dart';
+import '../Task.dart';
+import '../Providers/tasksProvider.dart';
 
 class TaskListItem extends ConsumerWidget {
   @override
@@ -16,19 +16,17 @@ class TaskListItem extends ConsumerWidget {
     );
   }
 }
-
 class TaskList{
-  List<String> _subjectList = ['md', 'so'];
-  List<Task> _tasks = [];
+  List<String> _subjectList = [""];
+  List<Task> _tasks = [new Task("","",DateTime.now(),0)];
   TaskList(){
     this._subjectList = [];
     this._tasks = [];
   }
   void addTask(String name, String expDate, int diff, String subject) {
-    //mirar si ya hay una instancia de esa task y lo de null y tal
     DateTime formatted = DateFormat(DateFormat.YEAR_NUM_MONTH_DAY).parse(expDate);
     Task task = Task(name, subject,formatted, diff);
-    _tasks.add(task);
+    this._tasks.add(task);
   }
   void removeTask(Task task) {
     _tasks.remove(task);
