@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PomodoroPersonalisedTime extends StatelessWidget{
-  const PomodoroPersonalisedTime({super.key});
+class PersonalisedTime extends StatelessWidget{
+  const PersonalisedTime({super.key});
 
   Widget build(BuildContext context){
     return Scaffold(

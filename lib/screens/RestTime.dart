@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PomodoroRestTime extends StatelessWidget{
-  const PomodoroRestTime({super.key});
+class RestTime extends StatelessWidget{
+  const RestTime({super.key});
 
    @override
   Widget build(BuildContext context){

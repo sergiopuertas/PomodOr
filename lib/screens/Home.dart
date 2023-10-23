@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'PomodoroHomeBody.dart';
+import 'HomeBody.dart';
 
-class PomodoroHome extends StatefulWidget{
-  const PomodoroHome({super.key});
+class Home extends StatefulWidget{
+  const Home({super.key});
 
   @override
   _PomodoroHomeState createState() => _PomodoroHomeState();
 }
 
-class _PomodoroHomeState extends State<PomodoroHome>{
+class _PomodoroHomeState extends State<Home>{
   
   @override
   Widget build(BuildContext context){
@@ -17,7 +17,7 @@ class _PomodoroHomeState extends State<PomodoroHome>{
         title : const Text('POMOD\'OR'),
         centerTitle: true ,
       ),
-      body : const PomodoroHomeBody(),
+      body : const HomeBody(),
       bottomNavigationBar: Container(
         color : Colors.white,
         height : 50.0,

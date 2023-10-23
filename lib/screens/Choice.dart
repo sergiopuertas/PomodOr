@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PomodoroChoice extends StatelessWidget{
-  const PomodoroChoice({super.key});
+class Choice extends StatelessWidget{
+  const Choice({super.key});
 
    @override
   Widget build(BuildContext context){
