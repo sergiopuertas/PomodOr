@@ -4,7 +4,7 @@ import 'package:pomodor/screens/Home.dart';
 import 'package:pomodor/screens/PersonalisedTime.dart';
 import 'package:pomodor/screens/RestTime.dart';
 import 'package:pomodor/screens/WorkTime.dart';
-import 'package:pomodor/screens/todolistScreen.dart';
+import 'package:pomodor/screens/TodolistScreen.dart';
 
 
 

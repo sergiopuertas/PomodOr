@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../toDoList/Lists/TaskList.dart';
 import '../toDoList/SlidingLists/SlidingTaskList.dart';
 import '../toDoList/MyCheckBox.dart';
+import '../toDoList/AddPopUp.dart';
+import '../toDoList/SlidingLists/ConstantScrollBehaviour.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -15,10 +17,11 @@ void main() {
 class todolistScreen extends StatefulWidget {
   const todolistScreen({super.key});
   @override
-  State<todolistScreen> createState() => _TestState();
+  State<todolistScreen> createState() => _todolistScreenState();
 }
 
-class _TestState extends State<todolistScreen> {
+class _todolistScreenState extends State<todolistScreen> {
+  final TaskList taskList = new TaskList();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -57,17 +60,6 @@ class _TestState extends State<todolistScreen> {
               OverflowBar(
                 alignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                /*Padding(
-                    padding: EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0),
-                          child: Text(
-                            'Order by:',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),*/
                 TextButton( child: const Text(
                 'Date',
                 style: const TextStyle(
@@ -90,42 +82,33 @@ class _TestState extends State<todolistScreen> {
                 // list.selectOrder(urgencyOrder);
               }
               ),
-                TextButton( child: const Text(
-                'Subject',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey,
+                TextButton(
+                    child: const Text(
+                    'Subject',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey,
                 ),
               ), onPressed: () {
                 // list.selectOrder(urgencyOrder);
-              }
+                }
               ),
               ],
               ),
               Container(
-                height:760,
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 200.0),
-                child: SlidingTaskList(),
+                height:600,
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 50.0),
+                child: SlidingTaskList(taskList: taskList),
               ),
+              Container(
+                padding: EdgeInsets.fromLTRB(350, 0.0, 0.0, 60.0),
+                child: AddPopUp(taskList: taskList),
+              )
             ],
-
-          ),
-        floatingActionButton:
-        FloatingActionButton(
-          onPressed: () {},
-          child: IconTheme(
-            data: IconThemeData(color: Colors.lightBlueAccent),
-            child: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                // Acción cuando se presiona el botón.
-              },
-            ),
           ),
         ),
-        ),
-      ],
+        ],
     );
   }
 }

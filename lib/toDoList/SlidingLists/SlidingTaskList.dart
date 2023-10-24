@@ -4,23 +4,18 @@ import '../Lists/TaskList.dart';
 import '../MyCheckBox.dart';
 import 'ConstantScrollBehaviour.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: SlidingTaskList(),
-  ));
-}
-
 class SlidingTaskList extends StatefulWidget {
-  const SlidingTaskList({Key? key}) : super(key: key);
+  final TaskList taskList;
+  const SlidingTaskList({required this.taskList}) ;
   @override
-  _SlidingTaskListState createState() => _SlidingTaskListState();
+  _SlidingTaskListState createState() => _SlidingTaskListState(taskList: taskList);
 }
 
 class _SlidingTaskListState extends State<SlidingTaskList> {
   final DateTime currentDate = DateTime.now();
-  final TaskList taskList = TaskList();
+  final TaskList taskList;
   ConstantScrollBehavior scrollBehavior = ConstantScrollBehavior();
-
+  _SlidingTaskListState({required this.taskList});
   @override
   void initState() {
     super.initState();

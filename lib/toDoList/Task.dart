@@ -4,11 +4,10 @@ import './Providers/tasksProvider.dart';
 import 'Urgency.dart';
 import 'dart:math';
 import 'package:intl/intl.dart';
+
 class TaskItem extends ConsumerWidget {
   final Task task;
-
   TaskItem({Key? key, required this.task}) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Row(
@@ -54,7 +53,6 @@ class Task {
   String _subject = '';
   List<String> _notesList = [];
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
-
   Task(String name,  String subject,  DateTime expDate,  int diff){
     _name = name;
     _subject = subject;
