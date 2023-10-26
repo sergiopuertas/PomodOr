@@ -1,39 +1,53 @@
 import 'package:flutter/material.dart';
 
-class HomeBody extends StatelessWidget{
-  const HomeBody({super.key});
+class HomeBody extends StatelessWidget {
+  const HomeBody({Key? key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title : const Text('HOME'),
+        title: const Text('HOME'),
       ),
-      body : Center (
-        child : Column(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              child:  Text("CHOICE MODE") ,
-              onPressed : (){
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue, // Couleur de fond du bouton
+                onPrimary: Colors.white, // Couleur du texte du bouton
+              ),
+              onPressed: () {
                 Navigator.pushNamed(context, '/page2');
-              }
+              },
+              child: Text("CHOICE MODE"),
             ),
-            TextButton(
-              child:  Text("START SESSION") ,
-              onPressed : (){
+            SizedBox(height: 16.0), // Espacement entre les boutons
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                onPrimary: Colors.white,
+              ),
+              onPressed: () {
                 Navigator.pushNamed(context, '/page3');
-              }
+              },
+              child: Text("START SESSION"),
             ),
-            TextButton(
-              child:  Text("PARAMETERS") ,
-              onPressed : (){
-                
-              }
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orange,
+                onPrimary: Colors.white,
+              ),
+              onPressed: () {
+                // Ajoutez le code à exécuter lorsque le bouton "PARAMETERS" est pressé
+              },
+              child: Text("PARAMETERS"),
             ),
           ],
-          )
-      )
+        ),
+      ),
     );
-    
   }
 }

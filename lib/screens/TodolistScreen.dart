@@ -5,14 +5,14 @@ import '../toDoList/MyCheckBox.dart';
 import '../toDoList/AddPopUp.dart';
 import '../toDoList/SlidingLists/ConstantScrollBehaviour.dart';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    scrollBehavior: const ConstantScrollBehavior(),
-    home: todolistScreen(),
-  )
-  );
-}
+// void main() {
+//   runApp(MaterialApp(
+//     debugShowCheckedModeBanner: false,
+//     scrollBehavior: const ConstantScrollBehavior(),
+//     home: todolistScreen(),
+//   )
+//   );
+// }
 
 class todolistScreen extends StatefulWidget {
   const todolistScreen({super.key});
