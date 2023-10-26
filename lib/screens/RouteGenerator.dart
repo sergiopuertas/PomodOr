@@ -6,11 +6,8 @@ import 'package:pomodor/screens/RestTime.dart';
 import 'package:pomodor/screens/WorkTime.dart';
 import 'package:pomodor/screens/TodolistScreen.dart';
 
-
-
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-
     switch (settings.name) {
       case '/page1':
         return MaterialPageRoute(builder: (_) => Home());
@@ -24,10 +21,21 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PersonalisedTime());
       case '/page6':
         return MaterialPageRoute(builder: (_) => todolistScreen());
-
-      default : 
-        return MaterialPageRoute(builder: (_) => Home());
-
+      default:
+        return _errorRoute();
     }
+  }
+
+  static MaterialPageRoute _errorRoute() {
+    return MaterialPageRoute(builder: (_) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Error'),
+        ),
+        body: Center(
+          child: Text('Page not found'),
+        ),
+      );
+    });
   }
 }
