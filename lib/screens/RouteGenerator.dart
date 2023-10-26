@@ -6,36 +6,51 @@ import 'package:pomodor/screens/RestTime.dart';
 import 'package:pomodor/screens/WorkTime.dart';
 import 'package:pomodor/screens/TodolistScreen.dart';
 
-class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case '/page1':
-        return MaterialPageRoute(builder: (_) => Home());
-      case '/page2':
-        return MaterialPageRoute(builder: (_) => Choice());
-      case '/page3':
-        return MaterialPageRoute(builder: (_) => WorkTime());
-      case '/page4':
-        return MaterialPageRoute(builder: (_) => RestTime());
-      case '/page5':
-        return MaterialPageRoute(builder: (_) => PersonalisedTime());
-      case '/page6':
-        return MaterialPageRoute(builder: (_) => todolistScreen());
-      default:
-        return _errorRoute();
-    }
-  }
+abstract class RouteFactory {
+  MaterialPageRoute createRoute();
+}
 
-  static MaterialPageRoute _errorRoute() {
-    return MaterialPageRoute(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Error'),
-        ),
-        body: Center(
-          child: Text('Page not found'),
-        ),
-      );
-    });
+class HomeRouteFactory extends RouteFactory {
+  @override
+  MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => Home());
+}
+class ChoiceRouteFactory extends RouteFactory {
+  @override
+  MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => Choice());
+}
+class WorkRouteFactory extends RouteFactory {
+  @override
+  MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => WorkTime());
+}
+class RestRouteFactory extends RouteFactory {
+  @override
+  MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => RestTime());
+}
+class PersonalisedRouteFactory extends RouteFactory {
+  @override
+  MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => PersonalisedTime());
+}
+class todoListRouteFactory extends RouteFactory {
+  @override
+  MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => todolistScreen());
+}
+
+class RouteGenerator {
+  static final Map<String, RouteFactory> _routes = {
+    '/page1': HomeRouteFactory(),
+    '/page2': ChoiceRouteFactory(),
+    '/page3': WorkRouteFactory(),
+    '/page4': RestRouteFactory(),
+    '/page5': PersonalisedRouteFactory(),
+    '/page6': todoListRouteFactory()
+  };
+
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    final factory = _routes[settings.name];
+    if (factory != null) {
+      return factory.createRoute();
+    }
+    // Default route
+    return HomeRouteFactory().createRoute();
   }
 }
