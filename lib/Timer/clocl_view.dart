@@ -15,27 +15,24 @@ class ClockView extends StatefulWidget {
 
 class _ClockViewState extends State<ClockView> {
 
-
   late DateTime currentTime; // Store the current time
   late Timer timer;
   bool isPaused = false;
   int selectedMinutes = 0;
   int selectedSeconds = 0;
 
-
   @override
   void initState() {
-    currentTime =
-        widget.initialTime; // Initialize currentTime with the initial time
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (!isPaused) {
-        setState(() {
-          // Decrement the time by 1 second
-          currentTime = currentTime.subtract(Duration(seconds: 1));
+    currentTime = widget.initialTime; // Initialize currentTime with the initial time
+      timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        if (!isPaused) {
+          setState(() {
+            // Decrement the time by 1 second
+            currentTime = currentTime.subtract(Duration(seconds: 1));
+          }
+          );
         }
-        );
-      }
-    });
+      });
     super.initState();
   }
 
@@ -138,9 +135,6 @@ class _ClockViewState extends State<ClockView> {
       ],
     );
   }
-
-
-
 }
 class ClockPainter extends CustomPainter {
   final DateTime currentTime;//
@@ -234,11 +228,8 @@ class ClockPainter extends CustomPainter {
   }
 }
 
-
-
-/* To implement it you have to give a Initial time:
-
-* class _HomePageState extends State<HomePage> {
+class ClockViewWidget extends StatelessWidget {
+  const ClockViewWidget({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -252,4 +243,3 @@ class ClockPainter extends CustomPainter {
     );
   }
 }
-* */

@@ -5,11 +5,11 @@ import 'package:pomodor/screens/PersonalisedTime.dart';
 import 'package:pomodor/screens/RestTime.dart';
 import 'package:pomodor/screens/WorkTime.dart';
 import 'package:pomodor/screens/TodolistScreen.dart';
+import 'package:pomodor/Timer/clocl_view.dart';
 
 abstract class RouteFactory {
   MaterialPageRoute createRoute();
 }
-
 class HomeRouteFactory extends RouteFactory {
   @override
   MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => Home());
@@ -34,6 +34,10 @@ class todoListRouteFactory extends RouteFactory {
   @override
   MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => todolistScreen());
 }
+class ClockViewFactory extends RouteFactory {
+  @override
+  MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => ClockViewWidget());
+}
 
 class RouteGenerator {
   static final Map<String, RouteFactory> _routes = {
@@ -42,7 +46,8 @@ class RouteGenerator {
     '/page3': WorkRouteFactory(),
     '/page4': RestRouteFactory(),
     '/page5': PersonalisedRouteFactory(),
-    '/page6': todoListRouteFactory()
+    '/page6': todoListRouteFactory(),
+    '/page7': ClockViewFactory()
   };
 
   static Route<dynamic> generateRoute(RouteSettings settings) {

@@ -1,37 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'Task.dart';
-class MyCheckBox extends StatefulWidget {
-  const MyCheckBox({super.key});
+import 'TaskList.dart'; // Asegúrate de que TaskList es un ChangeNotifier
 
-  @override
-  State<MyCheckBox> createState() => _CheckboxState();
-}
+class MyCheckBox extends StatelessWidget {
+  final Task task;
 
-class _CheckboxState extends State<MyCheckBox> {
-  bool isChecked = false;
+  const MyCheckBox({Key? key, required this.task}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
-      return Colors.transparent;
-    }
     return Checkbox(
-      checkColor: Colors.black,
-      fillColor: MaterialStateProperty.resolveWith(getColor),
-      value: isChecked,
-      onChanged: (bool? value) {
-        setState(() {
-          isChecked = value!;
-        });
+      checkColor: Colors.white,
+      fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        return Colors.blue; // Use the appropriate color
+      }),
+      onChanged: (bool? newValue) {
+        // Aquí usamos Provider para cambiar el estado de la tarea
+        Provider.of<TaskList>(context, listen: false).toggleTask(task);
       },
+      value: task.getIfFinished(),
     );
   }
 }

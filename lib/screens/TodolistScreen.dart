@@ -1,29 +1,17 @@
 import 'package:flutter/material.dart';
-import '../toDoList/Lists/TaskList.dart';
-import '../toDoList/SlidingLists/SlidingTaskList.dart';
+import 'package:provider/provider.dart';
+import '../toDoList/TaskList.dart';
 import '../toDoList/MyCheckBox.dart';
 import '../toDoList/AddPopUp.dart';
-import '../toDoList/SlidingLists/ConstantScrollBehaviour.dart';
+import '../toDoList/Task.dart';
+import '../toDoList/ConstantScrollBehaviour.dart';
+import '../toDoList/SortingStrategy.dart';
 
-// void main() {
-//   runApp(MaterialApp(
-//     debugShowCheckedModeBanner: false,
-//     scrollBehavior: const ConstantScrollBehavior(),
-//     home: todolistScreen(),
-//   )
-//   );
-// }
-
-class todolistScreen extends StatefulWidget {
-  const todolistScreen({super.key});
-  @override
-  State<todolistScreen> createState() => _todolistScreenState();
-}
-
-class _todolistScreenState extends State<todolistScreen> {
-  final TaskList taskList = new TaskList();
+class todolistScreen extends StatelessWidget {
+  const todolistScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var taskList = Provider.of<TaskList>(context);
     return Stack(
       children: [
         Container(
@@ -34,8 +22,7 @@ class _todolistScreenState extends State<todolistScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          child:
-          null,
+          child: null,
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -68,8 +55,8 @@ class _todolistScreenState extends State<todolistScreen> {
                   color: Colors.blueGrey,
                 ),
               ), onPressed: () {
-                // list.selectOrder(dateOrder);
-              }
+                  taskList.order('expDate');
+                }
               ),
                 TextButton( child: const Text(
                 'Urgency',
@@ -79,8 +66,8 @@ class _todolistScreenState extends State<todolistScreen> {
                   color: Colors.blueGrey,
                 ),
               ), onPressed: () {
-                // list.selectOrder(urgencyOrder);
-              }
+                  taskList.order('default');
+                }
               ),
                 TextButton(
                     child: const Text(
@@ -91,24 +78,58 @@ class _todolistScreenState extends State<todolistScreen> {
                       color: Colors.blueGrey,
                 ),
               ), onPressed: () {
-                // list.selectOrder(urgencyOrder);
+                  taskList.order('expDate');
                 }
               ),
               ],
               ),
               Container(
-                height:600,
+                height:540,
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 50.0),
-                child: SlidingTaskList(taskList: taskList),
+                child: TaskListItem(),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(350, 0.0, 0.0, 60.0),
-                child: AddPopUp(taskList: taskList),
+                height: 130,
+                padding: EdgeInsets.fromLTRB(350, 0.0, 0.0, 0.0),
+                child:
+                  AddPopUp(),
               )
             ],
           ),
+          bottomNavigationBar: Container(
+              color : Colors.white,
+              height : 90.0,
+              alignment : Alignment.center,
+              child : BottomAppBar(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.list),
+                      onPressed: null,
+                      iconSize: 40.0,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.calendar_month),
+                      onPressed:null,
+                      iconSize: 40.0,
+                    ),
+                    IconButton(
+                      icon : Icon(Icons.music_note),
+                      onPressed: null,
+                      iconSize: 40.0,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: null,
+                      iconSize: 40.0,
+                    ),
+                  ],
+                ),
+              )
+          ),
         ),
-        ],
+      ],
     );
   }
 }

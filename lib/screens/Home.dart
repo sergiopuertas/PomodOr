@@ -1,71 +1,73 @@
 import 'package:flutter/material.dart';
 import 'HomeBody.dart';
+import 'TodolistScreen.dart';
+import 'RouteGenerator.dart';
+import 'StartSession.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key});
-
+class Home extends StatefulWidget{
+  const Home({super.key});
   @override
   _PomodoroHomeState createState() => _PomodoroHomeState();
 }
 
-class _PomodoroHomeState extends State<Home> {
+class _PomodoroHomeState extends State<Home>{
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'POMOD\'OR',
-          style: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
+        toolbarHeight: 125, // Set this height
+        flexibleSpace: Container(
+          padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+          child: Text(
+            'WELCOME TO\n POMOD''\'OR!!',
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ),
-        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0, // <-- ELEVATION ZEROED
       ),
-      body: const HomeBody(),
+      body : StartSession(),
       bottomNavigationBar: Container(
-        height: 60.0,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 3),
+        color : Colors.white,
+        height : 90.0,
+        alignment : Alignment.center,
+        child : BottomAppBar(
+          child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.list),
+              onPressed: (){
+                Navigator.pushNamed(context, '/page6');
+              },
+              iconSize: 40.0,
+            ),
+            IconButton(
+              icon: Icon(Icons.calendar_month),
+              onPressed:null,
+              iconSize: 40.0,
+            ),
+            IconButton(
+              icon : Icon(Icons.music_note),
+              onPressed: null,
+              iconSize: 40.0,
+            ),
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: null,
+              iconSize: 40.0,
             ),
           ],
         ),
-        child: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.calendar_today,
-                  size: 28.0,
-                ),
-                onPressed: null,
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.music_note,
-                  size: 28.0,
-                ),
-                onPressed: null,
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.list,
-                  size: 28.0,
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/page6');
-                },
-              ),
-            ],
-          ),
-        ),
+        )
       ),
     );
   }
