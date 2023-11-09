@@ -3,7 +3,4 @@ This file is like an agenda to put notes on progress, doubts and to-dos.
 Sergio:
     hacer que los botones de borrar, editar o comentar sea: pulsas un botón, despliega 3 botoncitos y cada uno hace lo que tenga que hacer
     hacer que al trabajar te ponga tasks en proceso, y solo poder añadir notas a tasks en proceso
-    toquetear a.dart para que se parezca a lo q queremos.
-    Hacer con las Notes igual que con las tasks: cada note tiene una checkbox que si le pinchas desaparece. Importante imprimir lista de notas encima de la linea de inserción d texto. Convertir pantalla de escribir en popup
-    Revisar estructura y patrones: observador!
     Hacer que al pulsar el botón el current order de la lista cambie al que dijiste.

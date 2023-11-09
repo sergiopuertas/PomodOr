@@ -21,6 +21,7 @@ class _AddPopUpState extends State<AddPopUp> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: null,
       onPressed: () {
         ShowDialog(context);
       },

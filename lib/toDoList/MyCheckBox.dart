@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Task.dart';
-import 'TaskList.dart'; // Asegúrate de que TaskList es un ChangeNotifier
+import 'TaskList.dart';
 
 class MyCheckBox extends StatelessWidget {
   final Task task;
@@ -13,10 +13,9 @@ class MyCheckBox extends StatelessWidget {
     return Checkbox(
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        return Colors.blue; // Use the appropriate color
+        return Colors.transparent;
       }),
       onChanged: (bool? newValue) {
-        // Aquí usamos Provider para cambiar el estado de la tarea
         Provider.of<TaskList>(context, listen: false).toggleTask(task);
       },
       value: task.getIfFinished(),

@@ -4,6 +4,7 @@ import 'Urgency.dart';
 import 'TaskList.dart';
 import 'MyCheckBox.dart';
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskItem extends StatefulWidget {
   final Task task;
@@ -32,7 +33,6 @@ class _TaskItemState extends State<TaskItem> {
       });
     }
   }
-  // Este método ahora acepta una función de callback que se llama después de eliminar la task.
   void _showDeleteConfirmation(VoidCallback onConfirmDelete) {
     showDialog(
       context: context,
@@ -61,6 +61,7 @@ class _TaskItemState extends State<TaskItem> {
   }
 
   OverlayEntry _createOverlayEntry() {
+    var tasks = Provider.of<TaskList>(context, listen: false);
     Task task = widget.task;
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
@@ -76,7 +77,6 @@ class _TaskItemState extends State<TaskItem> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // Delete button
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
@@ -87,7 +87,6 @@ class _TaskItemState extends State<TaskItem> {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      // Use AlertDialog for confirmation
                       return AlertDialog(
                         title: const Text("Confirm Delete"),
                         content: const Text("Are you sure you want to delete this task?"),
@@ -125,20 +124,47 @@ class _TaskItemState extends State<TaskItem> {
                       return SimpleDialog(
                         title: const Text("Edit Task"),
                         children: <Widget>[
-                          // Implement your editing form here
                         ],
                       );
                     },
                   );
                 },
               ),
-              // Comment button
               IconButton(
                 icon: Icon(Icons.comment),
-                onPressed: () {
-                  _overlayEntry?.remove();
-                  isMenuOpen = false;
-                  // Implement your comment block logic here
+                onPressed: () async {
+                  String savedComment = task.getComment() ?? "";
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      TextEditingController _textController = TextEditingController(text: savedComment);
+                      return Dialog(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: 300, // when it reach the max it will use scroll
+                            maxWidth: 500,
+                          ),
+                          child: TextField(
+                            controller: _textController,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            minLines: 5,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: _textController.text,
+                              border: InputBorder.none,
+                            ),
+                            onChanged: (value) async {
+                              task.setComment(value);
+                              tasks.saveTasks();
+                            },
+                          ),
+                        ),
+                      );
+                      Navigator.of(context).pop();
+                    },
+                  );
                 },
               ),
             ],
@@ -150,6 +176,7 @@ class _TaskItemState extends State<TaskItem> {
 
   @override
   Widget build(BuildContext context) {
+
     Task task = widget.task;
     return Consumer<TaskList>(
       builder: (context, taskList, child) {
@@ -189,8 +216,12 @@ class _TaskItemState extends State<TaskItem> {
               trailing: SizedBox(
                 width: 40,
                 child: FloatingActionButton(
+                  backgroundColor: task.getUrgency().getColor(),
+                  elevation: 0.0,
                   onPressed: _toggleMenu,
-                  child: Icon(isMenuOpen ? Icons.close : Icons.menu),
+                  child: Icon(
+                    isMenuOpen ? Icons.close : Icons.menu,
+                  ),
                 ),
               ),
             )
@@ -217,14 +248,30 @@ class _TaskItemState extends State<TaskItem> {
   }
 }
 
-@immutable
 class Task {
+    Map<String, dynamic> toJson() => {
+      'name': _name,
+      'subject': _subject,
+      'expDate': _expDate.toIso8601String(),
+      'diff': _diff,
+      'finished': _finished,
+      'comment': _comment,
+    };
+
+    factory Task.fromJson(Map<String, dynamic> json) => Task(
+      json['name'],
+      json['subject'],
+      DateTime.parse(json['expDate']),
+      json['diff'],
+    ).._finished = json['finished'].._comment = json['comment'];
+
     String _name ='';
     bool _finished = false;
     DateTime _expDate = DateTime.now();
     int _diff = 0;
     Urgency _urgency = Urgency(0);
     String _subject = '';
+    String _comment = '';
     Task(String name,  String subject,  DateTime expDate,  int diff){
       _name = name;
       _subject = subject;
@@ -232,6 +279,7 @@ class Task {
       _diff = diff;
       _finished = false;
       _urgency = _calculateUrgency(expDate, diff);
+      _comment = '';
     }
     Task copyWith({
       String? name,
@@ -241,21 +289,32 @@ class Task {
       bool? finished,
     }) {
       return Task(name ?? this._name, subject ?? this._subject, expDate ?? this._expDate,diff ?? this._diff);
-
     }
     Urgency _calculateUrgency(DateTime expDate, int diff) {
       return Urgency(computeUrgency(expDate, diff));
     }
-    int computeUrgency(var expDate, var diff){
-      double remainingTimeRatio = min(1, _expDate.difference(DateTime.now()).inDays / 7);
-      double urgencyValue = (remainingTimeRatio + diff / 5) / 2;
-      if (urgencyValue <= 0.33) {
+    int computeUrgency(DateTime expDate, int diff){
+      int daysUntilExpDate = expDate.difference(DateTime.now()).inDays;
+      int tmp = 3 * diff + 6 * daysUntilExpDate;
+      int maxValue = 60;
+      double normalizedValue = tmp / maxValue;
+
+      normalizedValue = normalizedValue.clamp(0.0, 1.0);
+      if (normalizedValue <= 0.33) {
         return 1;
-      } else if (urgencyValue <= 0.66) {
+      }
+      else if (normalizedValue <= 0.66) {
         return 2;
-      } else {
+      }
+      else {
         return 3;
       }
+    }
+    void setComment(String comment){
+      this._comment = comment;
+    }
+    String getComment(){
+      return this._comment;
     }
     bool getIfFinished(){
       return this._finished;
@@ -279,5 +338,3 @@ class Task {
       _finished = !_finished;
     }
 }
-
-
