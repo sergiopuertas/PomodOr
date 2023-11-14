@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:pomodor/screens/Home.dart';
 import 'package:pomodor/screens/RouteGenerator.dart';
 import 'toDoList/TaskList.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'notifications.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    initNotifications();
     return FutureBuilder(
-      // Initialize SharedPreferences and load tasks
       future: _initApp(),
       builder: (context, snapshot) {
-        // Show a progress indicator while waiting for initialization
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const MaterialApp(home: CircularProgressIndicator());
         } else {
-          // Once complete, show your application
           return ChangeNotifierProvider(
             create: (context) => TaskList.instance,
             child: MaterialApp(
@@ -41,9 +40,7 @@ class MyApp extends StatelessWidget {
   }
 
   Future _initApp() async {
-    // Assuming you have a method to load tasks from SharedPreferences
     final taskList = await loadTaskList();
-    // Now set this task list to your TaskList provider
     TaskList.instance.setTasks(taskList);
   }
 }

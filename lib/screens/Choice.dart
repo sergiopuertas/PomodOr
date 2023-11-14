@@ -21,7 +21,7 @@ class Choice extends StatelessWidget {
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Couleur de fond du bouton
+                primary: Colors.blue,
                 onPrimary: Colors.white, // Couleur du texte du bouton
               ),
               onPressed: () {

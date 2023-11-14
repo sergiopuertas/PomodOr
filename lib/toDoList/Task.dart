@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pomodor/notifications.dart';
+
 import 'Urgency.dart';
 import 'TaskList.dart';
 import 'MyCheckBox.dart';
 import 'dart:math';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'PopUps.dart';
 
 class TaskItem extends StatefulWidget {
   final Task task;
@@ -60,13 +63,13 @@ class _TaskItemState extends State<TaskItem> {
     );
   }
 
+
   OverlayEntry _createOverlayEntry() {
     var tasks = Provider.of<TaskList>(context, listen: false);
     Task task = widget.task;
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
     var offset = renderBox.localToGlobal(Offset.zero);
-
     return OverlayEntry(
       builder: (context) => Positioned(
         left: offset.dx,
@@ -111,28 +114,14 @@ class _TaskItemState extends State<TaskItem> {
                   );
                 },
               ),
-              // Edit button
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  _overlayEntry?.remove();
-                  isMenuOpen = false;
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      // Use SimpleDialog or another appropriate widget for editing
-                      return SimpleDialog(
-                        title: const Text("Edit Task"),
-                        children: <Widget>[
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
+              EditPopup(task,() => _toggleMenu()),
               IconButton(
                 icon: Icon(Icons.comment),
                 onPressed: () async {
+                  _overlayEntry?.remove();
+                  setState(() {
+                    isMenuOpen = false;
+                  });
                   String savedComment = task.getComment() ?? "";
                   showDialog(
                     context: context,
@@ -176,7 +165,6 @@ class _TaskItemState extends State<TaskItem> {
 
   @override
   Widget build(BuildContext context) {
-
     Task task = widget.task;
     return Consumer<TaskList>(
       builder: (context, taskList, child) {
@@ -216,11 +204,13 @@ class _TaskItemState extends State<TaskItem> {
               trailing: SizedBox(
                 width: 40,
                 child: FloatingActionButton(
+                  heroTag: task.hashCode,
                   backgroundColor: task.getUrgency().getColor(),
                   elevation: 0.0,
                   onPressed: _toggleMenu,
                   child: Icon(
                     isMenuOpen ? Icons.close : Icons.menu,
+                    color: fitColor(task),
                   ),
                 ),
               ),
@@ -272,6 +262,7 @@ class Task {
     Urgency _urgency = Urgency(0);
     String _subject = '';
     String _comment = '';
+
     Task(String name,  String subject,  DateTime expDate,  int diff){
       _name = name;
       _subject = subject;
@@ -295,21 +286,15 @@ class Task {
     }
     int computeUrgency(DateTime expDate, int diff){
       int daysUntilExpDate = expDate.difference(DateTime.now()).inDays;
-      int tmp = 3 * diff + 6 * daysUntilExpDate;
-      int maxValue = 60;
-      double normalizedValue = tmp / maxValue;
-
-      normalizedValue = normalizedValue.clamp(0.0, 1.0);
-      if (normalizedValue <= 0.33) {
-        return 1;
-      }
-      else if (normalizedValue <= 0.66) {
-        return 2;
-      }
-      else {
+      if(daysUntilExpDate < 3){
         return 3;
       }
+      else if(daysUntilExpDate >=3 && diff >3){
+        return 2;
+      }
+      else return 1;
     }
+
     void setComment(String comment){
       this._comment = comment;
     }
@@ -319,14 +304,26 @@ class Task {
     bool getIfFinished(){
       return this._finished;
     }
+    void setSubject(String txt){
+      this._subject = txt;
+    }
     String getSubject(){
       return this._subject;
+    }
+    void setName(String txt){
+      this._name = txt;
     }
     String getName(){
       return this._name;
     }
+    void setDate(DateTime time){
+      this._expDate = time;
+    }
     DateTime getDate(){
       return this._expDate;
+    }
+    void setDiff(int num){
+      this._diff = num;
     }
     int getDiff(){
       return this._diff;
@@ -335,6 +332,12 @@ class Task {
       return this._urgency;
     }
     void toggleFinished() {
+      if(!_finished){
+        cancelTaskNotification(this);
+      }
+      else{
+        scheduleNotification(this);
+      }
       _finished = !_finished;
     }
 }

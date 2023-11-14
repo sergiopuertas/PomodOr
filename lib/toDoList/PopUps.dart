@@ -1,34 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'Task.dart';
 import 'TaskList.dart';
 import '../screens/TodolistScreen.dart';
-
-class AddPopUp extends StatefulWidget {
-  const AddPopUp({Key? key}) : super(key: key);
-
+// BasePopup y _BasePopupState
+abstract class BasePopup extends StatefulWidget {
   @override
-  _AddPopUpState createState() => _AddPopUpState();
+  _BasePopupState createState() => getState();
+
+  _BasePopupState getState();
+  String get nameprompt;
+  String get subjectprompt;
+
+  void customAction(BuildContext context, String name, DateTime expDate, int difficulty, String subject);
 }
 
-class _AddPopUpState extends State<AddPopUp> {
-  DateTime _chosenDate = DateTime.now();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _subjectController = TextEditingController();
-  int _selectedDiff = 0;
+abstract class _BasePopupState extends State<BasePopup> {
 
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      heroTag: null,
-      onPressed: () {
-        ShowDialog(context);
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _subjectController = TextEditingController();
+  DateTime _chosenDate = DateTime.now();
+  int _selectedDiff = 1;
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _chosenDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _chosenDate) {
+      setState(() {
+        _chosenDate = picked;
+      });
+    }
+  }
+
+  Widget _buildDifficultyDropdown() {
+    return DropdownButton<int>(
+      value: _selectedDiff, // Valor actual seleccionado en el Dropdown
+      items: <DropdownMenuItem<int>>[
+        DropdownMenuItem<int>(value: 1, child: Text('Very easy')),
+        DropdownMenuItem<int>(value: 2, child: Text('Easy')),
+        DropdownMenuItem<int>(value: 3, child: Text('Intermediate')),
+        DropdownMenuItem<int>(value: 4, child: Text('Difficult')),
+        DropdownMenuItem<int>(value: 5, child: Text('Very difficult')),
+      ],
+      onChanged: (int? newValue) {
+        if (newValue != null) {
+          setState(() {
+            _selectedDiff = newValue; // Actualiza el valor seleccionado
+          });
+        }
       },
-      child: const Icon(Icons.add),
     );
   }
-  void ShowDialog(BuildContext context){
+  void ShowDialog(BuildContext context) {
     {
       showDialog<Widget>(
           context: context,
@@ -37,7 +63,6 @@ class _AddPopUpState extends State<AddPopUp> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
                 ),
-                title: Text("Create task"),
                 content: Container(
                   width: 300.0,
                   child: Column(
@@ -45,12 +70,12 @@ class _AddPopUpState extends State<AddPopUp> {
                     children: <Widget>[
                       InputBox(
                         title: 'Name',
-                        parameter: 'Ex: Create cool app',
+                        parameter: widget.nameprompt,
                         textEditingController: _nameController,
                       ),
                       InputBox(
                         title: 'Subject',
-                        parameter: 'Ex: OOP on mobile devices',
+                        parameter: widget.subjectprompt,
                         textEditingController: _subjectController,
                       ),
                       SizedBox(
@@ -58,20 +83,17 @@ class _AddPopUpState extends State<AddPopUp> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('Choose Date'),
                               SizedBox(
                                 height: 80,
                                 child: Container(
                                   padding: EdgeInsets.fromLTRB(
                                       0.0, 20.0, 0.0, 0.0),
-                                  child: CupertinoDatePicker(
-                                    minimumDate: DateTime.now(),
-                                    mode: CupertinoDatePickerMode.date,
-                                    initialDateTime: DateTime.now(),
-                                    onDateTimeChanged: (
-                                        DateTime newDateTime) {
-                                      _chosenDate = newDateTime;
-                                    },
+                                  child: Center(
+                                    child: FloatingActionButton(
+                                      onPressed: () => _selectDate(context),
+                                      child: Icon(Icons
+                                          .calendar_today), // Icono del botón
+                                    ),
                                   ),
                                 ),
                               ),
@@ -82,12 +104,11 @@ class _AddPopUpState extends State<AddPopUp> {
                           height: 89,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text('Choose Difficulty'),
                               SizedBox(
-                                height: 70,
-                                child: DificultyPicker(
-                                    selectedDiff: _selectedDiff), // Corregido aquí
+                                height: 50,
+                                child: _buildDifficultyDropdown(),
                               ),
                             ],
                           )
@@ -101,7 +122,7 @@ class _AddPopUpState extends State<AddPopUp> {
                     child: InkWell(
                       onTap: () {
                         String name = _nameController.text;
-                        DateTime date = _chosenDate as DateTime;
+                        DateTime date = _chosenDate;
                         int diff = _selectedDiff;
                         String subject = _subjectController.text;
 
@@ -109,7 +130,7 @@ class _AddPopUpState extends State<AddPopUp> {
                           name = "Not defined";
                           subject = "Not defined";
                         }
-                        Provider.of<TaskList>(context, listen: false).addTask(name, date, diff, subject);
+                        widget.customAction(context,name, date, diff, subject);
                         _nameController.clear();
                         _subjectController.clear();
                         Navigator.of(context).pop();
@@ -176,15 +197,76 @@ class _AddPopUpState extends State<AddPopUp> {
       );
     }
   }
+}
 
-  bool isGoodName(String txt) {
-    return txt.isNotEmpty;
-  }
+// AddPopup y su estado
+class AddPopup extends BasePopup {
 
-  bool isGoodSubject(String txt) {
-    return txt.isNotEmpty;
+  @override
+  _AddPopupState createState() => _AddPopupState();
+  _BasePopupState getState() => _AddPopupState();
+
+  @override
+  String get nameprompt => "Ex: create cool App";
+  String get subjectprompt => "Ex: POO in mobile devices";
+
+  @override
+  void customAction(BuildContext context, String name, DateTime date, int diff, String subject) {
+    Provider.of<TaskList>(context, listen: false).addTask(name, date, diff, subject);
   }
 }
+
+class _AddPopupState extends _BasePopupState {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      backgroundColor: Colors.white,
+      heroTag: null,
+      onPressed: () {
+        ShowDialog(context);
+      },
+      child: Icon(
+        Icons.add,
+        color: Colors.black,
+      ),
+    );
+  }
+}
+
+// EditPopup y su estado
+class EditPopup extends BasePopup {
+  final Task task;
+  final VoidCallback onOverlayEntryRemove;
+  EditPopup(this.task, this.onOverlayEntryRemove);
+
+  @override
+  _EditPopupState createState() => _EditPopupState(onOverlayEntryRemove);
+  _BasePopupState getState() => _EditPopupState(onOverlayEntryRemove);
+
+  @override
+  String get nameprompt => task.getName();
+  String get subjectprompt => task.getSubject();
+  @override
+  void customAction(BuildContext context, String name, DateTime date, int diff, String subject) {
+    Provider.of<TaskList>(context, listen: false).editTask(task, name, date, diff, subject);
+  }
+}
+class _EditPopupState extends _BasePopupState {
+  _EditPopupState(this.onOverlayEntryRemove);
+  final VoidCallback onOverlayEntryRemove;
+  @override
+  Widget build(BuildContext context){
+    return IconButton(
+
+      icon: Icon(Icons.edit),
+      onPressed: (){
+        onOverlayEntryRemove();
+        ShowDialog(context);
+      },
+    );
+  }
+}
+
 class InputBox extends StatefulWidget {
   final String title;
   final String parameter;
@@ -194,7 +276,6 @@ class InputBox extends StatefulWidget {
     required this.title,
     required this.parameter,
     required this.textEditingController,
-
   });
 
   @override
@@ -214,8 +295,8 @@ class _InputBoxState extends State<InputBox> {
     required this.title,
     required this.parameter,
     required this.textEditingController,
-
   });
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -243,95 +324,10 @@ class _InputBoxState extends State<InputBox> {
   }
 }
 
-const double _kItemExtent = 32.0;
-
-const List<String> _difficulties = <String>[
-  'Very easy',
-  'Easy',
-  'Intermediate',
-  'Difficult',
-  'Very difficult',
-];
-class DificultyPicker extends StatefulWidget {
-
-  int selectedDiff;
-
-  DificultyPicker({required this.selectedDiff}); // Mantener el constructor
-
-  @override
-  State<DificultyPicker> createState() => _DificultyPickerState();
+bool isGoodName(String txt) {
+  return txt.isNotEmpty;
 }
 
-class _DificultyPickerState extends State<DificultyPicker> {
-
-  _DificultyPickerState();
-
-  void _showDialog(Widget child) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: 216,
-        padding: const EdgeInsets.only(top: 6.0),
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        child: SafeArea(
-          top: false,
-          child: child,
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: Colors.white,
-      child: DefaultTextStyle(
-        style: TextStyle(
-          color: CupertinoColors.label.resolveFrom(context),
-          fontSize: 22.0,
-        ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => _showDialog(
-                  CupertinoPicker(
-                    magnification: 1.22,
-                    squeeze: 1.2,
-                    useMagnifier: true,
-                    itemExtent: _kItemExtent,
-                    // This sets the initial item.
-                    scrollController: FixedExtentScrollController(
-                      initialItem: widget.selectedDiff,
-                    ),
-                    onSelectedItemChanged: (int selectedItem) {
-                      setState(() {
-                        widget.selectedDiff = selectedItem;
-                      });
-                    },
-                    children:
-                    List<Widget>.generate(_difficulties.length, (int index) {
-                      return Center(child: Text(_difficulties[index]));
-                    }),
-                  ),
-                ),
-                // This displays the selected fruit name.
-                child: Text(
-                  _difficulties[widget.selectedDiff],
-                  style: const TextStyle(
-                    fontSize: 22.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+bool isGoodSubject(String txt) {
+  return txt.isNotEmpty;
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pomodor/notifications.dart';
+import 'dart:convert';
+import 'dart:math';
 import 'Task.dart';
 import 'SortingStrategy.dart';
 import 'ConstantScrollBehaviour.dart';
 import 'MyCheckBox.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-
 
 Future<void> saveTaskList(List<Task> tasks) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -64,27 +66,51 @@ class TaskList with ChangeNotifier {
   void addTask(String name, DateTime expDate, int diff, String subject) {
     Task task = Task(name, subject, expDate, diff);
     _tasks.add(task);
+    scheduleNotification(task);
+    saveTasks();
+    notifyListeners();
+  }
+  void editTask(Task task, String name, DateTime expDate, int diff, String subj) {
+    if (task.getDate().difference(expDate) != 0){
+      cancelTaskNotification(task);
+    }
+    task.setDate(expDate);
+    task.setDiff(diff);
+    task.setName(name);
+    task.setSubject(subj);
+    scheduleNotification(task);
     saveTasks();
     notifyListeners();
   }
 
   void removeTask(Task task) {
     _tasks.remove(task);
+    cancelTaskNotification(task);
     saveTasks();
     notifyListeners();
   }
 
   List<Task> getTaskList() {
-    return List.unmodifiable(_tasks);
+    return _tasks;
   }
-
+  String calculateCompletedTaskPercentage() {
+    int returns;
+    if (_tasks.isEmpty) {
+      returns =  0; // Evita la división por cero si la lista está vacía
+    }
+    else{
+      int completedTasks = _tasks.where((task) => task.getIfFinished()).length;
+      returns = ((completedTasks / _tasks.length) * 100).ceil();
+    }
+    return 'Tasks completed: ' + returns.toString() + '%';
+  }
   void order(String orderType) {
     SortingStrategy strategy = SortingStrategyFactory.getSortingStrategy(orderType);
     this.getTaskList().sort(strategy.compare);
     notifyListeners();
   }
   void toggleTask(Task task) {
-    task.toggleFinished(); // Asumiendo que tienes un método así en la clase Task
+    task.toggleFinished();
     notifyListeners();
   }
 }

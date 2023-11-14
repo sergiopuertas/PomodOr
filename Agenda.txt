@@ -1,6 +1,4 @@
 This file is like an agenda to put notes on progress, doubts and to-dos.
 
 Sergio:
-    hacer que los botones de borrar, editar o comentar sea: pulsas un botón, despliega 3 botoncitos y cada uno hace lo que tenga que hacer
     hacer que al trabajar te ponga tasks en proceso, y solo poder añadir notas a tasks en proceso
-    Hacer que al pulsar el botón el current order de la lista cambie al que dijiste.

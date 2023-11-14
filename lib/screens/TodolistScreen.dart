@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../toDoList/TaskList.dart';
 import '../toDoList/MyCheckBox.dart';
-import '../toDoList/AddPopUp.dart';
+import '../toDoList/PopUps.dart';
 import '../toDoList/Task.dart';
 import '../toDoList/ConstantScrollBehaviour.dart';
 import '../toDoList/SortingStrategy.dart';
@@ -16,13 +16,7 @@ class todolistScreen extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
-            image:
-            DecorationImage(
-              image: AssetImage('assets/papel.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
+          color: Colors.white,
           child: null,
         ),
         Scaffold(
@@ -42,9 +36,19 @@ class todolistScreen extends StatelessWidget {
             elevation: 0,
           ),
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Center(
+                child: Text(
+                  taskList.calculateCompletedTaskPercentage(),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
               OverflowBar(
                 alignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -53,7 +57,7 @@ class todolistScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey,
+                  color: Colors.black,
                 ),
               ), onPressed: () {
                   taskList.order('expDate');
@@ -64,7 +68,7 @@ class todolistScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey,
+                  color: Colors.black,
                 ),
               ), onPressed: () {
                   taskList.order('default');
@@ -76,7 +80,7 @@ class todolistScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey,
+                      color: Colors.black,
                 ),
               ), onPressed: () {
                   taskList.order('expDate');
@@ -85,53 +89,28 @@ class todolistScreen extends StatelessWidget {
               ],
               ),
               Container(
-                height:540,
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 50.0),
+                height:695,
                 child: TaskListItem(),
               ),
-              Container(
-                height: 130,
-                padding: EdgeInsets.fromLTRB(350, 0.0, 0.0, 0.0),
-                child:
-                  AddPopUp(),
-              )
             ],
           ),
-          bottomNavigationBar: Container(
-              color : Colors.white,
-              height : 90.0,
-              alignment : Alignment.center,
-              child : BottomAppBar(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.list),
-                      onPressed: null,
-                      iconSize: 40.0,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.calendar_month),
-                      onPressed:null,
-                      iconSize: 40.0,
-                    ),
-                    IconButton(
-                      icon : Icon(Icons.music_note),
-                      onPressed: null,
-                      iconSize: 40.0,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.settings),
-                      onPressed: null,
-                      iconSize: 40.0,
-                    ),
-                  ],
-                ),
-              )
-          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            SizedBox(
+              height: 810,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AddPopup(),
+              ],
+            )
+          ]
         ),
       ],
     );
-  }
+    }
 }
 

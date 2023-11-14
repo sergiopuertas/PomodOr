@@ -56,11 +56,6 @@ class _PomodoroHomeState extends State<Home>{
               iconSize: 40.0,
             ),
             IconButton(
-              icon : Icon(Icons.music_note),
-              onPressed: null,
-              iconSize: 40.0,
-            ),
-            IconButton(
               icon: Icon(Icons.settings),
               onPressed: null,
               iconSize: 40.0,
