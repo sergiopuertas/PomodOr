@@ -1,5 +1,8 @@
 import UIKit
 import Flutter
+import UserNotifications
+
+UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in }
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
