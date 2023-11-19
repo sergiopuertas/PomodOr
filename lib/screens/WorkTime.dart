@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'TaskChoosing.dart';
+import 'package:pomodor/toDoList/Task.dart';
 import 'package:pomodor/toDoList/TaskList.dart';
 import 'package:pomodor/Timer/clocl_view.dart';
 
@@ -22,17 +25,22 @@ class WorkTime extends StatelessWidget{
               child: ClockViewWidget(),
           ),
           SizedBox(
-            height: 200,
+            height: 150,
             width: 450,
-            child: TaskListItem(),
-          ),
-          SizedBox(
-            height: 40,
-            width: 500,
+            child: TaskListItem(list: studyTasks(context)),
           ),
         ],
       )
     );
+  }
+  List<Task> studyTasks(BuildContext context) {
+    List<Task> tasksToStudy = [];
+    for (var task in  Provider.of<TaskList>(context, listen: false).getTaskList()) {
+      if (task.getIfChosen()) {
+        tasksToStudy.add(task);
+      }
+    }
+    return tasksToStudy;
   }
 
 }

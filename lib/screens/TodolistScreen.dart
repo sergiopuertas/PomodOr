@@ -90,7 +90,7 @@ class todolistScreen extends StatelessWidget {
               ),
               Container(
                 height:695,
-                child: TaskListItem(),
+                child: TaskListItem(list: Provider.of<TaskList>(context, listen: false).getTaskList()),
               ),
             ],
           ),
@@ -102,9 +102,73 @@ class todolistScreen extends StatelessWidget {
               height: 810,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                FloatingActionButton(
+                  heroTag: null,
+                  backgroundColor: Colors.red,
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Confirm Delete"),
+                        content: const Text("Are you sure you want to delete?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text("Delete"),
+                            onPressed: () {
+                              // Implement your delete logic here
+                              Provider.of<TaskList>(context, listen: false).deleteTasks();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  child: Icon(
+                      Icons.delete_forever,
+                    color: Colors.white,
+                  ),
+                ),
                 AddPopup(),
+                FloatingActionButton(
+                  heroTag: null,
+                  backgroundColor: Colors.green,
+                  onPressed: ()=> showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text("Have you completed these tasks?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text("No"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text("Yes"),
+                            onPressed: () {
+                              Provider.of<TaskList>(context, listen: false).finishTasks();
+                              Navigator.of(context).pop();
+                              },
+                          ),
+                        ],
+                     );
+                    },
+                  ),
+                  child: Icon(
+                    Icons.star,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             )
           ]
@@ -113,4 +177,3 @@ class todolistScreen extends StatelessWidget {
     );
     }
 }
-

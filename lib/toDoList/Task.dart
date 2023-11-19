@@ -11,7 +11,6 @@ import 'PopUps.dart';
 
 class TaskItem extends StatefulWidget {
   final Task task;
-
   TaskItem({Key? key, required this.task}) : super(key: key);
 
   @override
@@ -79,40 +78,6 @@ class _TaskItemState extends State<TaskItem> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  _overlayEntry?.remove();
-                  setState(() {
-                    isMenuOpen = false;
-                  });
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Confirm Delete"),
-                        content: const Text("Are you sure you want to delete this task?"),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text("Cancel"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text("Delete"),
-                            onPressed: () {
-                              // Implement your delete logic here
-                              Provider.of<TaskList>(context, listen: false).removeTask(widget.task);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
               EditPopup(task,() => _toggleMenu()),
               IconButton(
                 icon: Icon(Icons.comment),
@@ -170,13 +135,22 @@ class _TaskItemState extends State<TaskItem> {
         return Card(
             child: ListTile(
               leading: MyCheckBox(task: task),
-              title: Text(
-                task.getName(),
-                style: TextStyle(
-                  color: fitColor(task),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    task.getName(),
+                    style: TextStyle(
+                      color: fitColor(task),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Icon(
+                    Icons.star,
+                    color: task.getIfFinished() ? fitColor(task) : Colors.transparent,
+                  ),
+                ],
               ),
               tileColor: task.getUrgency().getColor(),
               subtitle: Row(
@@ -244,6 +218,7 @@ class Task {
     Urgency _urgency = Urgency(0);
     String _subject = '';
     String _comment = '';
+    bool _chosen = false;
 
     Task(String name,  String subject,  DateTime expDate,  int diff){
       _name = name;
@@ -317,7 +292,12 @@ class Task {
     Urgency getUrgency(){
       return this._urgency;
     }
-
+    bool getIfChosen(){
+      return this._chosen;
+    }
+    void setChosen(){
+      this._chosen = !_chosen;
+    }
     void toggleFinished() {
       if(!_finished){
         cancelTaskNotification(this);
@@ -327,12 +307,13 @@ class Task {
       }
       _finished = !_finished;
     }
+
 }
 String dateFormat(Task task) {
   if (task != null) {
-    return task.getDate().month.toString() +
+    return task.getDate().day.toString() +
         "/" +
-        task.getDate().day.toString() +
+        task.getDate().month.toString() +
         "/" +
         task.getDate().year.toString();
   } else {

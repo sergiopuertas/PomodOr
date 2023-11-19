@@ -15,10 +15,10 @@ class MyCheckBox extends StatelessWidget {
       fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
         return Colors.transparent;
       }),
-      onChanged: (bool? newValue) {
-        Provider.of<TaskList>(context, listen: false).toggleTask(task);
+      onChanged:(bool? newValue){
+        Provider.of<TaskList>(context, listen: false).toggleChosen(task);
       },
-      value: task.getIfFinished(),
+      value: task.getIfChosen(),
     );
   }
 }

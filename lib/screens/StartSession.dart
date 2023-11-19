@@ -18,7 +18,7 @@ class _StartSessionState extends State<StartSession>{
             width: 400,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/page7');
+                Navigator.pushNamed(context, '/page2');
               },
               child: Text(
                 'START \n SESSION',

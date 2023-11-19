@@ -6,9 +6,10 @@ import 'TaskList.dart';
 abstract class SortingStrategy {
   int compare(Task a, Task b);
 }
+
 class SubjectSortingStrategy implements SortingStrategy {
   @override
-  int compare(Task a, Task b) => a.getSubject().compareTo(b.getSubject());
+  int compare(Task a, Task b) => a.getSubject().toLowerCase().compareTo(b.getSubject().toLowerCase());
 }
 
 class ExpDateSortingStrategy implements SortingStrategy {
@@ -21,16 +22,14 @@ class DefaultSortingStrategy implements SortingStrategy {
   int compare(Task a, Task b) => -a.getUrgency().getNumber().compareTo(b.getUrgency().getNumber());
 }
 
-
 class SortingStrategyFactory {
   static final Map<String, SortingStrategy> _strategies = {
     'subject': SubjectSortingStrategy(),
     'expDate': ExpDateSortingStrategy(),
-    'urgency': DefaultSortingStrategy()
+    'urgency': DefaultSortingStrategy(),
   };
 
   static SortingStrategy getSortingStrategy(String orderType) {
-    return _strategies[orderType] as SortingStrategy ?? _strategies['date']!;
+    return _strategies[orderType] as SortingStrategy ?? _strategies['expDate']!;
   }
-
 }

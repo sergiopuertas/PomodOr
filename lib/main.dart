@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const MaterialApp(home: CircularProgressIndicator());
-        } else {
+        }
+        else {
           return ChangeNotifierProvider(
             create: (context) => TaskList.instance,
             child: MaterialApp(

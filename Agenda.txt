@@ -2,3 +2,6 @@ This file is like an agenda to put notes on progress, doubts and to-dos.
 
 Sergio:
     buscar nuevas funcionalidades y/o arreglar pantallas para que sea bonito.
+    funcionalidades posibles:
+        -> escoger una task y estudiarla: "Estás trabajando en: 'Ejercicio 3 matemáticas'". así en cada sesión de estudio se puede hacer un historial de tareas hechas.
+        notificaciones bloqueadas (mira alfon)

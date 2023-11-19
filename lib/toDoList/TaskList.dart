@@ -26,9 +26,12 @@ Future<List<Task>> loadTaskList() async {
   }
 }
 class TaskListItem extends StatelessWidget {
+  final List<Task> list;
+  const TaskListItem({required this.list});
+
   Widget build(BuildContext context) {
     ConstantScrollBehavior scrollBehavior = ConstantScrollBehavior();
-    var tasks = Provider.of<TaskList>(context).getTaskList();
+    var tasks = list;
     return ScrollConfiguration(
       behavior: scrollBehavior,
       child: SingleChildScrollView(
@@ -41,6 +44,7 @@ class TaskListItem extends StatelessWidget {
 }
 
 class TaskList with ChangeNotifier {
+  String _currentOrder = 'expDate';
   void setTasks(List<Task> tasks) {
     _tasks = tasks;
     notifyListeners();
@@ -63,10 +67,17 @@ class TaskList with ChangeNotifier {
 
   List<Task> _tasks = [];
 
+  String getCurrentOrder(){
+    return _currentOrder;
+  }
+  List<Task> getTaskList() {
+    return _tasks;
+  }
   void addTask(String name, DateTime expDate, int diff, String subject) {
     Task task = Task(name, subject, expDate, diff);
     _tasks.add(task);
     scheduleNotification(task);
+    order(this._currentOrder);
     saveTasks();
     notifyListeners();
   }
@@ -83,24 +94,15 @@ class TaskList with ChangeNotifier {
     task.setUrgency(expDate, diff);
 
     if(changedDate) scheduleNotification(task);
+    order(this._currentOrder);
     saveTasks();
     notifyListeners();
   }
 
-  void removeTask(Task task) {
-    _tasks.remove(task);
-    cancelTaskNotification(task);
-    saveTasks();
-    notifyListeners();
-  }
-
-  List<Task> getTaskList() {
-    return _tasks;
-  }
   String calculateCompletedTaskPercentage() {
     int returns;
     if (_tasks.isEmpty) {
-      returns =  0; // Evita la división por cero si la lista está vacía
+      returns =  0;
     }
     else{
       int completedTasks = _tasks.where((task) => task.getIfFinished()).length;
@@ -111,10 +113,36 @@ class TaskList with ChangeNotifier {
   void order(String orderType) {
     SortingStrategy strategy = SortingStrategyFactory.getSortingStrategy(orderType);
     this.getTaskList().sort(strategy.compare);
+    _currentOrder = orderType;
     notifyListeners();
   }
   void toggleTask(Task task) {
     task.toggleFinished();
     notifyListeners();
+  }
+  void toggleChosen(Task task) {
+    task.setChosen();
+    notifyListeners();
+  }
+  void deleteTasks() {
+    List<Task> tasksToRemove = [];
+    for (var task in _tasks) {
+      if (task.getIfChosen()) {
+        tasksToRemove.add(task);
+      }
+    }
+    for (var task in tasksToRemove) {
+      _tasks.remove(task);
+      cancelTaskNotification(task);
+    }
+    saveTasks();
+    notifyListeners();
+  }
+  void finishTasks(){
+    _tasks.forEach((task) {
+      if(task.getIfChosen()){
+       toggleTask(task);
+      }
+    });
   }
 }

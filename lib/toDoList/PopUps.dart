@@ -23,7 +23,6 @@ abstract class _BasePopupState extends State<BasePopup> {
   DateTime _chosenDate = DateTime.now();
   int _selectedDiff = 1;
 
-
   void ShowDialog(BuildContext context, String prevName, String prevSubject, DateTime prevDate, int prevDiff) {
     {
       _nameController.text = prevName;
@@ -291,6 +290,7 @@ class _InputBoxState extends State<InputBox> {
         SizedBox(
           height: 70,
           child: TextField(
+            maxLength: 18,
             controller: this.textEditingController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
