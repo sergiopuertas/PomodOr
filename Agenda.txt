@@ -1,4 +1,4 @@
 This file is like an agenda to put notes on progress, doubts and to-dos.
 
 Sergio:
-    hacer que al trabajar te ponga tasks en proceso, y solo poder añadir notas a tasks en proceso
+    buscar nuevas funcionalidades y/o arreglar pantallas para que sea bonito.

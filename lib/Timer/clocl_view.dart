@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -129,6 +128,7 @@ class _ClockViewState extends State<ClockView> {
             setState(() {
               currentTime = DateTime(0, 0, 0, 0, selectedMinutes, selectedSeconds);
             });
+            Navigator.pushNamed(context, '/page3');
           },
           child: Text("Set Initial Time"),
         ),
@@ -235,7 +235,7 @@ class ClockViewWidget extends StatelessWidget {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        color: Color(0xFF2D2F41),
+        color: Colors.white,
         child: ClockView(
           initialTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 1, 0, 0),
         ),

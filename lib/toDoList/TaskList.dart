@@ -71,14 +71,18 @@ class TaskList with ChangeNotifier {
     notifyListeners();
   }
   void editTask(Task task, String name, DateTime expDate, int diff, String subj) {
+    bool changedDate = false;
     if (task.getDate().difference(expDate) != 0){
       cancelTaskNotification(task);
+      changedDate = true;
     }
     task.setDate(expDate);
     task.setDiff(diff);
     task.setName(name);
     task.setSubject(subj);
-    scheduleNotification(task);
+    task.setUrgency(expDate, diff);
+
+    if(changedDate) scheduleNotification(task);
     saveTasks();
     notifyListeners();
   }

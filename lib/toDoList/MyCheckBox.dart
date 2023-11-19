@@ -11,7 +11,7 @@ class MyCheckBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Checkbox(
-      checkColor: Colors.white,
+      checkColor: fitColor(task),
       fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
         return Colors.transparent;
       }),

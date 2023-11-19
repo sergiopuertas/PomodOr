@@ -71,7 +71,7 @@ class todolistScreen extends StatelessWidget {
                   color: Colors.black,
                 ),
               ), onPressed: () {
-                  taskList.order('default');
+                  taskList.order('urgency');
                 }
               ),
                 TextButton(
@@ -83,7 +83,7 @@ class todolistScreen extends StatelessWidget {
                       color: Colors.black,
                 ),
               ), onPressed: () {
-                  taskList.order('expDate');
+                  taskList.order('subject');
                 }
               ),
               ],

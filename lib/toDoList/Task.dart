@@ -63,7 +63,6 @@ class _TaskItemState extends State<TaskItem> {
     );
   }
 
-
   OverlayEntry _createOverlayEntry() {
     var tasks = Provider.of<TaskList>(context, listen: false);
     Task task = widget.task;
@@ -219,23 +218,6 @@ class _TaskItemState extends State<TaskItem> {
       },
     );
   }
-
-  String dateFormat(Task task) {
-    if (task != null) {
-      return task.getDate().month.toString() +
-          "/" +
-          task.getDate().day.toString() +
-          "/" +
-          task.getDate().year.toString();
-    } else {
-      return 'Date Missing';
-    }
-  }
-
-  Color fitColor(Task task) {
-    if (task != null && task.getUrgency().getNumber() == 2) return Colors.black;
-    return Colors.white;
-  }
 }
 
 class Task {
@@ -281,15 +263,19 @@ class Task {
     }) {
       return Task(name ?? this._name, subject ?? this._subject, expDate ?? this._expDate,diff ?? this._diff);
     }
+    void setUrgency(DateTime expDate, int diff){
+      this._urgency = _calculateUrgency(expDate, diff);
+    }
     Urgency _calculateUrgency(DateTime expDate, int diff) {
       return Urgency(computeUrgency(expDate, diff));
     }
     int computeUrgency(DateTime expDate, int diff){
       int daysUntilExpDate = expDate.difference(DateTime.now()).inDays;
       if(daysUntilExpDate < 3){
-        return 3;
+        if(diff >2)  return 3;
+        else return 2;
       }
-      else if(daysUntilExpDate >=3 && diff >3){
+      else if((daysUntilExpDate >=3 && daysUntilExpDate <=15) && diff >3){
         return 2;
       }
       else return 1;
@@ -331,6 +317,7 @@ class Task {
     Urgency getUrgency(){
       return this._urgency;
     }
+
     void toggleFinished() {
       if(!_finished){
         cancelTaskNotification(this);
@@ -340,4 +327,20 @@ class Task {
       }
       _finished = !_finished;
     }
+}
+String dateFormat(Task task) {
+  if (task != null) {
+    return task.getDate().month.toString() +
+        "/" +
+        task.getDate().day.toString() +
+        "/" +
+        task.getDate().year.toString();
+  } else {
+    return 'Date Missing';
+  }
+}
+
+Color fitColor(Task task) {
+  if (task != null && task.getUrgency().getNumber() == 2) return Colors.black;
+  return Colors.white;
 }

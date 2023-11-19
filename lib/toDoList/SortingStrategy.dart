@@ -26,11 +26,11 @@ class SortingStrategyFactory {
   static final Map<String, SortingStrategy> _strategies = {
     'subject': SubjectSortingStrategy(),
     'expDate': ExpDateSortingStrategy(),
-    'default': DefaultSortingStrategy()  // Default: sort by urgency
+    'urgency': DefaultSortingStrategy()
   };
 
   static SortingStrategy getSortingStrategy(String orderType) {
-    return _strategies[orderType] as SortingStrategy ?? _strategies['default']!;
+    return _strategies[orderType] as SortingStrategy ?? _strategies['date']!;
   }
 
 }
