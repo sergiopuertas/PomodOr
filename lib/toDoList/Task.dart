@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomodor/notifications.dart';
+import 'package:pomodor/auxiliar.dart';
+import 'package:pomodor/toDoList/PopUps/BasePopUp.dart';
 
 import 'Urgency.dart';
 import 'TaskList.dart';
 import 'MyCheckBox.dart';
 import 'dart:math';
-import 'PopUps.dart';
+
 
 class TaskItem extends StatefulWidget {
   final Task task;
@@ -52,7 +54,7 @@ class _TaskItemState extends State<TaskItem> {
             TextButton(
               child: const Text("Delete"),
               onPressed: () {
-                onConfirmDelete(); // Llama al callback para borrar la task.
+                onConfirmDelete();
                 Navigator.of(context).pop();
               },
             ),
@@ -129,6 +131,7 @@ class _TaskItemState extends State<TaskItem> {
 
   @override
   Widget build(BuildContext context) {
+    bool place = Provider.of<TaskList>(context, listen: false).getChoosingProcess();
     Task task = widget.task;
     return Consumer<TaskList>(
       builder: (context, taskList, child) {
@@ -174,7 +177,7 @@ class _TaskItemState extends State<TaskItem> {
                   ),
                 ],
               ),
-              trailing: SizedBox(
+              trailing: !place ? SizedBox(
                 width: 40,
                 child: FloatingActionButton(
                   heroTag: task.hashCode,
@@ -186,14 +189,13 @@ class _TaskItemState extends State<TaskItem> {
                     color: fitColor(task),
                   ),
                 ),
-              ),
+              ):null,
             )
         );
       },
     );
   }
 }
-
 class Task {
     Map<String, dynamic> toJson() => {
       'name': _name,
@@ -219,6 +221,7 @@ class Task {
     String _subject = '';
     String _comment = '';
     bool _chosen = false;
+
 
     Task(String name,  String subject,  DateTime expDate,  int diff){
       _name = name;
@@ -307,21 +310,4 @@ class Task {
       }
       _finished = !_finished;
     }
-
-}
-String dateFormat(Task task) {
-  if (task != null) {
-    return task.getDate().day.toString() +
-        "/" +
-        task.getDate().month.toString() +
-        "/" +
-        task.getDate().year.toString();
-  } else {
-    return 'Date Missing';
-  }
-}
-
-Color fitColor(Task task) {
-  if (task != null && task.getUrgency().getNumber() == 2) return Colors.black;
-  return Colors.white;
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:pomodor/auxiliar.dart';
 import 'package:pomodor/screens/Home.dart';
 import 'package:pomodor/screens/RouteGenerator.dart';
 import 'toDoList/TaskList.dart';

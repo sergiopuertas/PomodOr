@@ -9,6 +9,7 @@ import 'Task.dart';
 import 'SortingStrategy.dart';
 import 'ConstantScrollBehaviour.dart';
 import 'MyCheckBox.dart';
+import 'package:pomodor/auxiliar.dart';
 
 Future<void> saveTaskList(List<Task> tasks) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -44,6 +45,21 @@ class TaskListItem extends StatelessWidget {
 }
 
 class TaskList with ChangeNotifier {
+  static final TaskList _instance = TaskList._internal();
+
+  TaskList._internal() {
+    _tasks = <Task>[];
+  }
+  static TaskList get instance => _instance;
+
+  List<Task> _tasks = [];
+  bool _choosingProcess = false;
+  bool getChoosingProcess(){
+    return _choosingProcess;
+  }
+  void changeChoosingProcess(bool value){
+    _choosingProcess = value;
+  }
   String _currentOrder = 'expDate';
   void setTasks(List<Task> tasks) {
     _tasks = tasks;
@@ -58,14 +74,6 @@ class TaskList with ChangeNotifier {
     _tasks = await loadTaskList();
     notifyListeners();
   }
-  static final TaskList _instance = TaskList._internal();
-
-  TaskList._internal() {
-    _tasks = <Task>[];
-  }
-  static TaskList get instance => _instance;
-
-  List<Task> _tasks = [];
 
   String getCurrentOrder(){
     return _currentOrder;
@@ -138,10 +146,19 @@ class TaskList with ChangeNotifier {
     saveTasks();
     notifyListeners();
   }
+  void unchooseTasks() {
+    for (var task in _tasks) {
+      if (task.getIfChosen()) {
+        task.setChosen();
+      }
+    }
+    saveTasks();
+    notifyListeners();
+  }
   void finishTasks(){
     _tasks.forEach((task) {
       if(task.getIfChosen()){
-       toggleTask(task);
+        toggleTask(task);
       }
     });
   }

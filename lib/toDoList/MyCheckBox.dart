@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pomodor/auxiliar.dart';
 import 'Task.dart';
 import 'TaskList.dart';
+
 
 class MyCheckBox extends StatelessWidget {
   final Task task;
