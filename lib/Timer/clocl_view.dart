@@ -1,43 +1,61 @@
 import 'dart:math';
+import 'main.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 
 class ClockView extends StatefulWidget {
   final DateTime initialTime; //
 
-  ClockView({
-    required this.initialTime,
-  });
+  ClockView({required this.initialTime,});
+
   @override
   _ClockViewState createState() => _ClockViewState();
 }
 
 class _ClockViewState extends State<ClockView> {
 
+
   late DateTime currentTime; // Store the current time
   late Timer timer;
-  bool isPaused = false;
+  bool isPaused = true;
+  bool hasStarted = false;
   int selectedMinutes = 0;
   int selectedSeconds = 0;
 
+
+
+
+
   @override
   void initState() {
-    currentTime = widget.initialTime; // Initialize currentTime with the initial time
-      timer = Timer.periodic(Duration(seconds: 1), (timer) {
-        if (!isPaused) {
-          setState(() {
-            // Decrement the time by 1 second
-            currentTime = currentTime.subtract(Duration(seconds: 1));
-          }
-          );
-        }
-      });
     super.initState();
+    currentTime = widget.initialTime;
+
+
+    // Initialize selectedMinutes based on initialTime
+    selectedMinutes = widget.initialTime.minute;
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (!isPaused) {
+        setState(() {
+          currentTime = currentTime.subtract(Duration(seconds: 1));
+          // Calculate remaining time
+          int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 + currentTime.second;
+          int remainingMinutes = totalSeconds ~/ 60;
+          int remainingSeconds = totalSeconds % 60;
+
+          // Update the notification
+        });
+      }
+    });
   }
+
 
   void resetTimer() {
     setState(() {
-      currentTime = widget.initialTime; // Resetting the time to initial value
+      currentTime = widget.initialTime;// Resetting the time to initial value
+      hasStarted = false;
     });
   }
 
@@ -50,18 +68,18 @@ class _ClockViewState extends State<ClockView> {
   void resumeTimer() {
     setState(() {
       isPaused = false;
+      hasStarted = true;
     });
   }
 
 
   @override
-  void dispose() {
-    timer.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // Calculate remaining time in minutes and seconds
+    int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 + currentTime.second;
+    int remainingMinutes = totalSeconds ~/ 60;
+    int remainingSeconds = totalSeconds % 60;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -72,13 +90,25 @@ class _ClockViewState extends State<ClockView> {
             size: Size(300, 300),
           ),
         ),
+        // Numeric counter for remaining time
+        if (hasStarted) ...[
+          SizedBox(height: 20),
+          Text(
+            '${remainingMinutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white, // Set text color to white
+            ),
+          ),
+        ],
         SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: isPaused ? resumeTimer : pauseTimer,
-              child: Text(isPaused ? "Resume" : "Pause"),
+              child: Text(isPaused ? (hasStarted ? "Resume" : "Start") : "Pause"),
             ),
             SizedBox(width: 20),
             ElevatedButton(
@@ -87,16 +117,18 @@ class _ClockViewState extends State<ClockView> {
             ),
           ],
         ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButton<int>(
+        if (!hasStarted) ...[
+          SizedBox(height: 20),
+          Center(
+            child: DropdownButton<int>(
               value: selectedMinutes,
               items: List.generate(60, (index) {
                 return DropdownMenuItem<int>(
-                  value: index,
-                  child: Text('$index min'),
+                    value: index,
+                    child:Text(
+                      '$index min',
+                      style: TextStyle(color: Colors.black),
+                    )// Set text color to white,
                 );
               }),
               onChanged: (value) {
@@ -105,37 +137,28 @@ class _ClockViewState extends State<ClockView> {
                 });
               },
             ),
-            SizedBox(width: 10),
-            DropdownButton<int>(
-              value: selectedSeconds,
-              items: List.generate(60, (index) {
-                return DropdownMenuItem<int>(
-                  value: index,
-                  child: Text('$index sec'),
-                );
-              }),
-              onChanged: (value) {
-                setState(() {
-                  selectedSeconds = value!;
-                });
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              currentTime = DateTime(0, 0, 0, 0, selectedMinutes, selectedSeconds);
-            });
-            Navigator.pushNamed(context, '/page3');
-          },
-          child: Text("Set Initial Time"),
-        ),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                currentTime = DateTime(0, 0, 0, 0, selectedMinutes, 0);
+                // Add notification logic here when setting initial time
+              });
+            },
+            child: Text("Set Initial Time"),
+          ),
+        ],
       ],
     );
   }
+
+
+
+
 }
+
+
 class ClockPainter extends CustomPainter {
   final DateTime currentTime;//
   late DateTime dateTime;
@@ -174,13 +197,14 @@ class ClockPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 8;
-
+/* HOUR HAND
     var hourHandBrush = Paint()
       ..shader = RadialGradient(colors: [Color(0xFFEA74AB), Color(0xFFC279FB)])
           .createShader(Rect.fromCircle(center: center, radius: radius))
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 12;
+      */
 
     var dashBrush = Paint()
       ..color = Color(0xFFEAECFF)
@@ -194,11 +218,12 @@ class ClockPainter extends CustomPainter {
     // Decrement the time by 1 second every second
     //dateTime = dateTime.subtract(Duration(seconds: 1));
 
-    var hourHandX = centerX +
+    /* var hourHandX = centerX +
         60 * cos((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
     var hourHandY = centerX +
         60 * sin((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
     canvas.drawLine(center, Offset(hourHandX, hourHandY), hourHandBrush);
+*/
 
     var minHandX = centerX + 80 * cos(dateTime.minute * 6 * pi / 180);
     var minHandY = centerX + 80 * sin(dateTime.minute * 6 * pi / 180);
@@ -228,18 +253,21 @@ class ClockPainter extends CustomPainter {
   }
 }
 
-class ClockViewWidget extends StatelessWidget {
-  const ClockViewWidget({super.key});
+
+
+/*
+*
+*
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        color: Colors.white,
-        child: ClockView(
-          initialTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 1, 0, 0),
-        ),
+    return MaterialApp(
+      title: 'Timer',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: HomePage(),
     );
-  }
-}
+  }*/
