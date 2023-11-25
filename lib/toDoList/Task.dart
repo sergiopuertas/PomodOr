@@ -70,62 +70,89 @@ class _TaskItemState extends State<TaskItem> {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
     var offset = renderBox.localToGlobal(Offset.zero);
+
     return OverlayEntry(
-      builder: (context) => Positioned(
-        left: offset.dx,
-        top: offset.dy + size.height,
-        width: size.width,
-        child: Material(
-          elevation: 2,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              EditPopup(task,() => _toggleMenu()),
-              IconButton(
-                icon: Icon(Icons.comment),
-                onPressed: () async {
-                  _overlayEntry?.remove();
-                  setState(() {
-                    isMenuOpen = false;
-                  });
-                  String savedComment = task.getComment() ?? "";
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      TextEditingController _textController = TextEditingController(text: savedComment);
-                      return Dialog(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: 300, // when it reach the max it will use scroll
-                            maxWidth: 500,
-                          ),
-                          child: TextField(
-                            controller: _textController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            minLines: 5,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: _textController.text,
-                              border: InputBorder.none,
-                            ),
-                            onChanged: (value) async {
-                              task.setComment(value);
-                              tasks.saveTasks();
-                            },
-                          ),
-                        ),
-                      );
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
+      builder: (context) => GestureDetector(
+      onTap: () {
+        _overlayEntry?.remove();
+        setState(() {
+          isMenuOpen = false;
+        });
+      },
+      behavior: HitTestBehavior.translucent,
+      child: Container(
+        color: Colors.transparent,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            Positioned(
+              right: offset.dx,
+              top: offset.dy + size.height,
+              width: size.width/3,
+              child: Material(
+                borderRadius: BorderRadius.circular(20),
+                elevation: 4.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    EditPopup(task,() => _toggleMenu()),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    IconButton(
+                      color: Colors.blueAccent,
+                      icon: Icon(Icons.comment),
+                      onPressed: () async {
+                        _overlayEntry?.remove();
+                        setState(() {
+                          isMenuOpen = false;
+                        });
+                        String savedComment = task.getComment() ?? "";
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            TextEditingController _textController = TextEditingController(text: savedComment);
+                            return Dialog(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxHeight: 300, // when it reach the max it will use scroll
+                                  maxWidth: 500,
+                                ),
+                                child: TextField(
+                                  controller: _textController,
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 10,
+                                  minLines: 10,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    hintText: _textController.text.isEmpty ? "Type your comments here" : _textController.text,
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (value) async {
+                                    task.setComment(value);
+                                    tasks.saveTasks();
+                                  },
+                                ),
+                              ),
+                            );
+                            Navigator.of(context).pop();
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    ),
     );
   }
 
@@ -149,10 +176,22 @@ class _TaskItemState extends State<TaskItem> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Icon(
-                    Icons.star,
-                    color: task.getIfFinished() ? fitColor(task) : Colors.transparent,
-                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: task.getIfFinished() ? fitColor(task) : Colors.transparent,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        Icons.timer_off_outlined,
+                        color: task.isTimedOut() ? fitColor(task) : Colors.transparent,
+                      ),
+                    ],
+                  )
                 ],
               ),
               tileColor: task.getUrgency().getColor(),
@@ -213,6 +252,7 @@ class Task {
       json['diff'],
     ).._finished = json['finished'].._comment = json['comment'];
 
+
     String _name ='';
     bool _finished = false;
     DateTime _expDate = DateTime.now();
@@ -221,7 +261,6 @@ class Task {
     String _subject = '';
     String _comment = '';
     bool _chosen = false;
-
 
     Task(String name,  String subject,  DateTime expDate,  int diff){
       _name = name;
@@ -250,15 +289,17 @@ class Task {
     int computeUrgency(DateTime expDate, int diff){
       int daysUntilExpDate = expDate.difference(DateTime.now()).inDays;
       if(daysUntilExpDate < 3){
-        if(diff >2)  return 3;
+        if(diff == 3)  return 3;
         else return 2;
       }
-      else if((daysUntilExpDate >=3 && daysUntilExpDate <=15) && diff >3){
+      else if((daysUntilExpDate >=3 && daysUntilExpDate <=15) && diff == 3){
         return 2;
       }
       else return 1;
     }
-
+    bool isTimedOut(){
+      return this._expDate.isBefore(DateTime.now());
+    }
     void setComment(String comment){
       this._comment = comment;
     }

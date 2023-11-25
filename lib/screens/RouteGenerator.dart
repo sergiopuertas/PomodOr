@@ -4,6 +4,8 @@ import 'package:pomodor/screens/RestTime.dart';
 import 'package:pomodor/screens/WorkTime.dart';
 import 'package:pomodor/screens/TodolistScreen.dart';
 import 'package:pomodor/screens/TaskChoosing.dart';
+import 'package:pomodor/screens/TimeChoosing.dart';
+
 
 import 'package:pomodor/Timer/clocl_view.dart';
 
@@ -34,13 +36,17 @@ class TaskChoosingFactory extends RouteFactory {
   @override
   MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => TaskChoosing());
 }
-
+class TimeChoosingFactory extends RouteFactory {
+  @override
+  MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => TimeChoosing());
+}
 class RouteGenerator {
   static final Map<String, RouteFactory> _routes = {
     '/page1': HomeRouteFactory(),
     '/page2': TaskChoosingFactory(),
     '/page3': WorkRouteFactory(),
     '/page4': RestRouteFactory(),
+    '/page5': TimeChoosingFactory(),
     '/page6': todoListRouteFactory(),
     '/page7': ClockViewFactory()
   };

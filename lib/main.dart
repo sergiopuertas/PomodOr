@@ -6,9 +6,15 @@ import 'package:pomodor/screens/Home.dart';
 import 'package:pomodor/screens/RouteGenerator.dart';
 import 'toDoList/TaskList.dart';
 import 'notifications.dart';
+import 'package:flutter/services.dart';
+
 
 void main() async {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {

@@ -26,12 +26,11 @@ class _MyDiffPickerState extends State<MyDiffPicker> {
           title: Text('Select Difficulty'),
           content: SingleChildScrollView(
             child: ListBody(
+              mainAxis: Axis.vertical,
               children: <DropdownMenuItem<int>>[
-                DropdownMenuItem<int>(value: 1, child: Text('Very easy')),
-                DropdownMenuItem<int>(value: 2, child: Text('Easy')),
-                DropdownMenuItem<int>(value: 3, child: Text('Intermediate')),
-                DropdownMenuItem<int>(value: 4, child: Text('Difficult')),
-                DropdownMenuItem<int>(value: 5, child: Text('Very difficult')),
+                DropdownMenuItem<int>(value: 1, child: Text('Easy')),
+                DropdownMenuItem<int>(value: 2, child: Text('Intermediate')),
+                DropdownMenuItem<int>(value: 3, child: Text('Difficult')),
               ].map((item) {
                 return ListTile(
                   title: item.child,
@@ -45,7 +44,7 @@ class _MyDiffPickerState extends State<MyDiffPicker> {
         );
       },
     ).then((int? value) {
-      if (value != null) {
+      if (value != null ) {
         setState(() {
           selectedDiff = value;
           widget.onDifficultySelected(value);
@@ -56,15 +55,11 @@ class _MyDiffPickerState extends State<MyDiffPicker> {
   String getDifficultyText(int difficulty) {
     switch (difficulty) {
       case 1:
-        return 'Very easy';
-      case 2:
         return 'Easy';
-      case 3:
+      case 2:
         return 'Intermediate';
-      case 4:
+      case 3:
         return 'Difficult';
-      case 5:
-        return 'Very difficult';
       default:
         return 'Unknown';
     }

@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'Task.dart';
 import 'SortingStrategy.dart';
-import 'ConstantScrollBehaviour.dart';
+
 import 'MyCheckBox.dart';
 import 'package:pomodor/auxiliar.dart';
 
@@ -34,8 +34,10 @@ class TaskListItem extends StatelessWidget {
     ConstantScrollBehavior scrollBehavior = ConstantScrollBehavior();
     var tasks = list;
     return ScrollConfiguration(
+
       behavior: scrollBehavior,
       child: SingleChildScrollView(
+
         child: Column(
           children: tasks.map((task) => TaskItem(task: task)).toList(),
         ),

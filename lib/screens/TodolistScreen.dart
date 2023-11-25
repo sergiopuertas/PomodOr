@@ -4,7 +4,6 @@ import '../toDoList/TaskList.dart';
 import '../toDoList/MyCheckBox.dart';
 import '../toDoList/PopUps/BasePopUp.dart';
 import '../toDoList/Task.dart';
-import '../toDoList/ConstantScrollBehaviour.dart';
 import '../toDoList/SortingStrategy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomodor/auxiliar.dart';
@@ -14,12 +13,7 @@ class todolistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var taskList = Provider.of<TaskList>(context);
-    taskList.changeChoosingProcess(false);
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child:Stack(
+    return Stack(
         children: [
           Container(
             color: Colors.white,
@@ -34,7 +28,7 @@ class todolistScreen extends StatelessWidget {
                   color: Colors.black,
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/page1');
+                  Navigator.pop(context);
                 },
               ),
               title: Text(
@@ -127,7 +121,6 @@ class todolistScreen extends StatelessWidget {
               ]
           ),
         ],
-      )
     );
     }
 }
@@ -140,11 +133,11 @@ class FinishButton extends StatelessWidget{
     return FloatingActionButton(
       heroTag: null,
       backgroundColor: Colors.green,
-      onPressed: () {
+      onPressed: tasksChosen(taskList.getTaskList()) ? () {
         taskList.finishTasks();
         taskList.order(taskList.getCurrentOrder());
         taskList.unchooseTasks();
-      },
+      } : null,
       child: Icon(
         Icons.star,
         color: Colors.white,
@@ -160,7 +153,7 @@ class DeleteButton extends StatelessWidget{
     return FloatingActionButton(
       heroTag: null,
       backgroundColor: Colors.red,
-      onPressed: () =>
+      onPressed: tasksChosen(taskList.getTaskList()) ? () =>
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -186,7 +179,7 @@ class DeleteButton extends StatelessWidget{
                 ],
               );
             },
-          ),
+          ) : null,
       child: Icon(
         Icons.delete_forever,
         color: Colors.white,

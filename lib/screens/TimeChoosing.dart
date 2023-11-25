@@ -6,10 +6,11 @@ import '../toDoList/Task.dart';
 import '../toDoList/SortingStrategy.dart';
 import '../toDoList/PopUps/BasePopUp.dart';
 import '../toDoList/PopUps/submitButton.dart';
+import '../Timer/clocl_view.dart';
 import 'dart:async';
 
-class TaskChoosing extends StatelessWidget {
-  TaskChoosing({Key? key}) : super(key: key);
+class TimeChoosing extends StatelessWidget {
+  TimeChoosing({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -19,14 +20,14 @@ class TaskChoosing extends StatelessWidget {
           backgroundColor: Colors.white,
           appBar:AppBar(
             leading: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             elevation: 0,
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
@@ -37,17 +38,7 @@ class TaskChoosing extends StatelessWidget {
                   height: 80,
                 ),
                 Text(
-                  'CHOOSE THE TASKS',
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'YOU''\'D LIKE TO TACKLE',
+                  'CHOOSE THE TIME\nDISTRIBUTION',
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -66,25 +57,16 @@ class TaskChoosing extends StatelessWidget {
               ),
               SizedBox(
                 height: 560,
-                child: TaskListItem(list: uncompletedTasks(context)),
+                child: ClockViewWidget(),
               ),
-              submitButton(text: 'Continue without tasks', function:()=> Continue(context, true), color: Colors.grey, size: 12),
               SizedBox(
                 height: 10,
               ),
-              submitButton(text: "Continue",function:()=> Continue(context, false),color: Colors.amber[600] as Color, size: 25.0)
+              submitButton(text: "Let's go",function:()=> workAnnouncement(context) ,color: Colors.amber[600] as Color , size: 25.0)
             ],
           ),
         ),
       ],
     );
-  }
-  void Continue(BuildContext context, bool empty){
-    if(empty) {
-      var taskList = Provider.of<TaskList>(context, listen: false);
-      taskList.unchooseTasks();
-      Navigator.pushNamed(context, '/page5');
-    }
-    else tasksChosen(uncompletedTasks(context)) ? Navigator.pushNamed(context, '/page5') : showTemporaryDialog(context);
   }
 }

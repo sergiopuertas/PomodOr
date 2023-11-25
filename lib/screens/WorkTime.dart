@@ -33,6 +33,8 @@ class _WorkTimeState extends State<WorkTime> {
     });
   }
   Widget build(BuildContext context) {
+    var taskList = Provider.of<TaskList>(context,listen: false);
+    taskList.changeChoosingProcess(false);
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -52,13 +54,14 @@ class _WorkTimeState extends State<WorkTime> {
                     context: context,
                     builder:(BuildContext context) {
                       return AlertDialog(
+
                         content: const Text(
                             "Are you sure you want to finish the session?"),
                         actions: <Widget>[
                           TextButton(
                             child: const Text("Yes"),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/page1');
+                              Navigator.popAndPushNamed(context,'/page1');
                             },
                           ),
                           TextButton(
@@ -132,6 +135,7 @@ class AddMoreButton extends StatelessWidget {
   }
 
   void showAddDialog(BuildContext context, List<Task> list) {
+    Provider.of<TaskList>(context, listen: false).changeChoosingProcess(true);
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -188,6 +192,7 @@ class AddMoreButton extends StatelessWidget {
     } else {
       showTemporaryDialog(context);
     }
+    Provider.of<TaskList>(context, listen: false).changeChoosingProcess(false);
   }
-}
 
+}

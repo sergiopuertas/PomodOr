@@ -66,8 +66,7 @@ abstract class _BasePopupState extends State<BasePopup> {
                                   SizedBox(
                                     height: 100,
                                     child: Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          0.0, 20.0, 0.0, 0.0),
+                                      padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
                                       child: Center(
                                         child: MyDateSelector(
                                           onDateSelected: (DateTime newDate) {
@@ -188,6 +187,7 @@ class _EditPopupState extends _BasePopupState {
   @override
   Widget build(BuildContext context){
     return IconButton(
+      color: Colors.black,
       icon: Icon(Icons.edit),
       onPressed: (){
         onOverlayEntryRemove();
@@ -196,4 +196,3 @@ class _EditPopupState extends _BasePopupState {
     );
   }
 }
-
