@@ -7,7 +7,7 @@ import 'package:pomodor/screens/TaskChoosing.dart';
 import 'package:pomodor/toDoList/Task.dart';
 import 'package:pomodor/toDoList/TaskList.dart';
 import 'package:pomodor/toDoList/PopUps/BasePopUp.dart';
-import 'package:pomodor/Timer/clocl_view.dart';
+import 'package:pomodor/Timer/clock_view.dart';
 import 'package:pomodor/auxiliar.dart';
 import 'dart:math';
 import 'dart:async';

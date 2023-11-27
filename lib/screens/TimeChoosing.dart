@@ -6,7 +6,7 @@ import '../toDoList/Task.dart';
 import '../toDoList/SortingStrategy.dart';
 import '../toDoList/PopUps/BasePopUp.dart';
 import '../toDoList/PopUps/submitButton.dart';
-import '../Timer/clocl_view.dart';
+import '../Timer/clock_view.dart';
 import 'dart:async';
 
 class TimeChoosing extends StatelessWidget {

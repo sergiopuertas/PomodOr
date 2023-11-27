@@ -7,7 +7,7 @@ import 'package:pomodor/screens/TaskChoosing.dart';
 import 'package:pomodor/screens/TimeChoosing.dart';
 
 
-import 'package:pomodor/Timer/clocl_view.dart';
+import 'package:pomodor/Timer/clock_view.dart';
 
 abstract class RouteFactory {
   MaterialPageRoute createRoute();
