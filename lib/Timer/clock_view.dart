@@ -2,8 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:pomodor/timer_mode.dart';
-import 'time_selection_screen.dart';
+import 'package:pomodor/Timer/timer_mode.dart';
+
+import 'package:pomodor/screens/time_selection_screem.dart';
 import 'package:provider/provider.dart';
 
 
