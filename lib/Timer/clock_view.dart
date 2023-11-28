@@ -2,7 +2,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '/screens/time_selection_screem.dart';
+import 'package:pomodor/timer_mode.dart';
+import 'time_selection_screen.dart';
+import 'package:provider/provider.dart';
+
 
 
 class ClockView extends StatefulWidget {
@@ -19,7 +22,7 @@ class _ClockViewState extends State<ClockView> {
 
   late DateTime currentTime; // Store the current time
   late Timer timer;
-  bool isPaused = true;
+  bool isPaused = false;
   bool hasStarted = false;
   int selectedMinutes = 0;
   int selectedSeconds = 0;
@@ -27,35 +30,42 @@ class _ClockViewState extends State<ClockView> {
 
 
 
-
   @override
   void initState() {
     super.initState();
-    currentTime = widget.initialTime;
 
+    final timerMode = Provider.of<TimerMode>(context, listen: false);
+    // Set currentTime to the initial Work Mode time
+    currentTime = timerMode.initialWorkTime;
 
-    // Initialize selectedMinutes based on initialTime
-    selectedMinutes = widget.initialTime.minute;
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (!isPaused) {
         setState(() {
-          currentTime = currentTime.subtract(Duration(seconds: 1));
-          // Calculate remaining time
           int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 + currentTime.second;
-          int remainingMinutes = totalSeconds ~/ 60;
-          int remainingSeconds = totalSeconds % 60;
-
-          // Update the notification
+          if (totalSeconds > 0) {
+            currentTime = currentTime.subtract(Duration(seconds: 1));
+          } else {
+            // When timer reaches zero, switch modes and reset to the initial time of the new mode
+            timerMode.switchMode();
+            currentTime = timerMode.isWorkMode ? timerMode.initialWorkTime : timerMode.initialRestTime;
+            // Optionally, if you want to keep the timer paused after switching modes, set isPaused to true
+            // isPaused = true;
+          }
         });
       }
     });
   }
 
 
+
   void resetTimer() {
+    final timerMode = Provider.of<TimerMode>(context, listen: false);
+
     setState(() {
-      currentTime = widget.initialTime;// Resetting the time to initial value
+      // Reset to the initial time of the current mode
+      currentTime = timerMode.isWorkMode ? timerMode.initialWorkTime : timerMode.initialRestTime;
       hasStarted = false;
+      isPaused = true; // Ensure the timer is paused
     });
   }
 
@@ -72,7 +82,6 @@ class _ClockViewState extends State<ClockView> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     // Calculate remaining time in minutes and seconds
@@ -80,11 +89,20 @@ class _ClockViewState extends State<ClockView> {
     int remainingMinutes = totalSeconds ~/ 60;
     int remainingSeconds = totalSeconds % 60;
 
-    return Container(
-        color:Colors.grey[900],
-        child:Center(
-            child:
-            Column(children: <Widget>[
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Clock View'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Colors.grey[900], // Optional: match the appBar color with the background
+      ),
+      body: Container(
+        color: Colors.grey[900],
+        child: Center(
+          child: Column(
+            children: <Widget>[
               Transform.rotate(
                 angle: -pi / 2,  // -90 degrees in radians
                 child: CustomPaint(
@@ -92,41 +110,35 @@ class _ClockViewState extends State<ClockView> {
                   size: Size(300, 300),
                 ),
               ),
-              // Numeric counter for remaining time
-              if (hasStarted) ...[
-                SizedBox(height: 20),
-                Text(
-                  '${remainingMinutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white, // Set text color to white
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-              ],
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: isPaused ? resumeTimer : pauseTimer,
-                    child: Text(isPaused ? (hasStarted ? "Resume" : "Start") : "Pause"),
-                  ),
-                  SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: resetTimer,
-                    child: Text("Reset"),
-                  ),
-                ],
+              // Always display remaining time
+              Text(
+                '${remainingMinutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  decoration: TextDecoration.none,
+                ),
               ),
-
+              SizedBox(height: 20),
+              IconButton(
+                iconSize: 64,
+                icon: Icon(isPaused ? Icons.play_arrow : Icons.pause),
+                onPressed: () {
+                  if (isPaused) {
+                    resumeTimer();
+                  } else {
+                    pauseTimer();
+                  }
+                },
+              ),
             ],
-            )
-        )
+          ),
+        ),
+      ),
     );
   }
-
 
 
 
