@@ -7,8 +7,8 @@ class TimerMode with ChangeNotifier {
   bool _isWorkMode = true;
   int _completedCycles = 0;
 
-  late DateTime initialWorkTime; // Initial time for work mode
-  late DateTime initialRestTime; // Initial time for rest mode
+  late DateTime initialWorkTime; //
+  late DateTime initialRestTime; //
 
   void setInitialWorkTime(DateTime time) {
     initialWorkTime = time;
