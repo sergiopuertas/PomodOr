@@ -1,8 +1,4 @@
 This file is like an agenda to put notes on progress, doubts and to-dos.
 
 Sergio:
-    arreglar multiples errores en funciones que la he liado parda
-    buscar nuevas funcionalidades y/o arreglar pantallas para que sea bonito.
-    funcionalidades posibles:
-        -> escoger una task y estudiarla: "Estás trabajando en: 'Ejercicio 3 matemáticas'". así en cada sesión de estudio se puede hacer un historial de tareas hechas.
-        notificaciones bloqueadas (mira alfon)
+    no entiendo. parece que cuando se pone el workmode se vuelve a hacer initstate y se cambia otra vez a restmode

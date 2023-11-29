@@ -17,71 +17,69 @@ class TaskChoosing extends StatelessWidget {
       children: [
         Scaffold(
           backgroundColor: Colors.white,
-          appBar:AppBar(
-            leading: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
+          appBar: AppBar(
+            title: Column(
+                children: <Widget>[
+                  Text(
+                    'CHOOSE THE TASKS',
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                  Text(
+                    "YOU'D LIKE TO TACKLE",
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+            ),
             elevation: 0,
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
-            toolbarHeight: 100,
-            flexibleSpace: Column(
-              children:<Widget> [
-                SizedBox(
-                  height: 80,
-                ),
-                Text(
-                  'CHOOSE THE TASKS',
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'YOU''\'D LIKE TO TACKLE',
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
+            toolbarHeight:  MediaQuery.of(context).size.height/9,
           ),
           body: Column(
             children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 560,
+              SizedBox(height: 20),
+              Expanded(
                 child: TaskListItem(list: uncompletedTasks(context)),
               ),
-              submitButton(text: 'Continue without tasks', function:()=> Continue(context, true), color: Colors.grey, size: 12),
-              SizedBox(
-                height: 10,
+              submitButton(
+                text: 'Continue without tasks',
+                function: () => Continue(context, true),
+                color: Colors.grey,
+                textColor: Colors.white,
+                size: 12,
               ),
-              submitButton(text: "Continue",function:()=> Continue(context, false),color: Colors.amber[600] as Color, size: 25.0)
+              SizedBox(height: 10),
+              submitButton(
+                text: "Continue",
+                function: () => Continue(context, false),
+                color: Colors.amber[600]!,
+                textColor: Colors.black,
+                size: 25.0,
+              ),
+              SizedBox(height: 30),
             ],
           ),
         ),
       ],
     );
+
   }
   void Continue(BuildContext context, bool empty){
-    if(empty) {
+    if(!empty) {
       var taskList = Provider.of<TaskList>(context, listen: false);
+      studyTasks(context,true);
       taskList.unchooseTasks();
       Navigator.pushNamed(context, '/page5');
     }

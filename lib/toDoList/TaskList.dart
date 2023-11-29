@@ -55,18 +55,14 @@ class TaskList with ChangeNotifier {
   static TaskList get instance => _instance;
 
   List<Task> _tasks = [];
-  bool _choosingProcess = false;
-  bool getChoosingProcess(){
-    return _choosingProcess;
-  }
-  void changeChoosingProcess(bool value){
-    _choosingProcess = value;
-  }
+  List<Task> get getTaskList => _tasks;
+
   String _currentOrder = 'expDate';
   void setTasks(List<Task> tasks) {
     _tasks = tasks;
     notifyListeners();
   }
+
   void saveTasks() async {
     await saveTaskList(_tasks);
     notifyListeners();
@@ -76,17 +72,22 @@ class TaskList with ChangeNotifier {
     _tasks = await loadTaskList();
     notifyListeners();
   }
+  bool _choosingProcess = false;
+  bool getChoosingProcess(){
+    return _choosingProcess;
+  }
+  void changeChoosingProcess(bool value){
+    _choosingProcess = value;
+  }
 
   String getCurrentOrder(){
     return _currentOrder;
   }
-  List<Task> getTaskList() {
-    return _tasks;
-  }
+
   void addTask(String name, DateTime expDate, int diff, String subject) {
     Task task = Task(name, subject, expDate, diff);
     _tasks.add(task);
-    scheduleNotification(task);
+    //scheduleNotification(task);
     order(this._currentOrder);
     saveTasks();
     notifyListeners();
@@ -94,7 +95,7 @@ class TaskList with ChangeNotifier {
   void editTask(Task task, String name, DateTime expDate, int diff, String subj) {
     bool changedDate = false;
     if (task.getDate().difference(expDate) != 0){
-      cancelTaskNotification(task);
+      //cancelTaskNotification(task);
       changedDate = true;
     }
     task.setDate(expDate);
@@ -103,7 +104,7 @@ class TaskList with ChangeNotifier {
     task.setSubject(subj);
     task.setUrgency(expDate, diff);
 
-    if(changedDate) scheduleNotification(task);
+    //if(changedDate) scheduleNotification(task);
     order(this._currentOrder);
     saveTasks();
     notifyListeners();
@@ -122,7 +123,7 @@ class TaskList with ChangeNotifier {
   }
   void order(String orderType) {
     SortingStrategy strategy = SortingStrategyFactory.getSortingStrategy(orderType);
-    this.getTaskList().sort(strategy.compare);
+    this.getTaskList.sort(strategy.compare);
     _currentOrder = orderType;
     notifyListeners();
   }
@@ -143,7 +144,7 @@ class TaskList with ChangeNotifier {
     }
     for (var task in tasksToRemove) {
       _tasks.remove(task);
-      cancelTaskNotification(task);
+      //cancelTaskNotification(task);
     }
     saveTasks();
     notifyListeners();

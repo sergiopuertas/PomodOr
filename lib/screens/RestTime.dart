@@ -10,6 +10,7 @@ import 'package:pomodor/toDoList/TaskList.dart';
 import 'package:pomodor/toDoList/PopUps/BasePopUp.dart';
 import 'package:pomodor/Timer/clock_view.dart';
 import 'package:pomodor/auxiliar.dart';
+import 'package:pomodor/Timer/timer_mode.dart';
 import 'dart:math';
 import 'dart:async';
 
@@ -20,20 +21,13 @@ class RestTime extends StatefulWidget {
 }
 
 class _RestTimeState extends State<RestTime> {
-  List<Task> studyList = [];
 
   @override
   void initState() {
     super.initState();
-    studyList = studyTasks(context);
-  }
-
-  void addTaskToStudyList(Task task) {
-    setState(() {
-      studyList.add(task);
-    });
   }
   Widget build(BuildContext context) {
+    var timerMode = Provider.of<TimerMode>(context, listen: false);
     var taskList = Provider.of<TaskList>(context,listen: false);
     taskList.changeChoosingProcess(false);
     return WillPopScope(
@@ -45,6 +39,7 @@ class _RestTimeState extends State<RestTime> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0.0,
+            toolbarHeight:  MediaQuery.of(context).size.height/9,
             leading: IconButton(
               icon: Icon(
                 Icons.arrow_back,
@@ -61,7 +56,8 @@ class _RestTimeState extends State<RestTime> {
                           TextButton(
                             child: const Text("Yes"),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/page1');
+                              timerMode.endSession(context, false);
+                              Navigator.popAndPushNamed(context, '/page1');
                             },
                           ),
                           TextButton(
@@ -84,15 +80,32 @@ class _RestTimeState extends State<RestTime> {
             ),
           ),
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                height: 504,
-                width: 500,
-                child: ClockViewWidget(),
+              Expanded(
+                flex: 4,
+                child:  Column(
+                  children: [
+                    ClockView(initialTime: Provider.of<TimerMode>(context).initialWorkTime),
+                    Center(
+                      child: Text('Cycle number ${timerMode.completedCycles+1} '),
+                    ),
+                  ],
+                )
+              ),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    timerMode.motivationalSentences[timerMode.sentenceIndex],
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
             ],
-          )
+          ),
       ),
     );
   }

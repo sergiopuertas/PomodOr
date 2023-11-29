@@ -4,22 +4,38 @@ import 'package:pomodor/toDoList/Task.dart';
 import 'package:pomodor/toDoList/TaskList.dart';
 import 'package:pomodor/toDoList/PopUps/BasePopUp.dart';
 import 'package:pomodor/toDoList/SortingStrategy.dart';
+import 'package:pomodor/Timer/timer_mode.dart';
 import 'dart:async';
 import 'dart:math';
 import 'dart:convert';
 
-List<Task> studyTasks(BuildContext context) {
-  List<Task> tasksToStudy = [];
+void studyTasks(BuildContext context, bool value)  {
   TaskList tasklist = Provider.of<TaskList>(context, listen: false);
-  for (var task in  tasklist.getTaskList()) {
-    if (task.getIfChosen() && !task.getIfFinished()) {
-      tasksToStudy.add(task);
+  if(value){
+    for (var task in  tasklist.getTaskList) {
+      if (task.getIfChosen()) {
+        task.setStudied(value);
+      }
+    }
+  }
+  else {
+    for (var task in  tasklist.getTaskList) {
+      task.setStudied(value);
     }
   }
   WidgetsBinding.instance.addPostFrameCallback((_) {
     Provider.of<TaskList>(context, listen: false).unchooseTasks();
   });
-  return tasksToStudy;
+}
+List<Task> taskBeingStudied(BuildContext context){
+  List<Task> taskBeingStudied = [];
+  TaskList tasklist = Provider.of<TaskList>(context, listen: false);
+  for (var task in  tasklist.getTaskList) {
+    if (task.getIfStudied) {
+      taskBeingStudied.add(task);
+    }
+  }
+  return taskBeingStudied;
 }
 
 List<Task> additions(BuildContext context,List<Task> study ) {
@@ -29,7 +45,7 @@ List<Task> additions(BuildContext context,List<Task> study ) {
 }
 List<Task> uncompletedTasks(BuildContext context) {
   List<Task> tasks = [];
-  for (var task in  Provider.of<TaskList>(context, listen: false).getTaskList()) {
+  for (var task in  Provider.of<TaskList>(context, listen: false).getTaskList) {
     if (!task.getIfFinished()) {
       tasks.add(task);
     }
@@ -111,18 +127,36 @@ Future<void> showBigDialog(BuildContext context, String text, int time) async {
   }
 }
 Future<void> workAnnouncement(BuildContext context) async {
-  await showBigDialog(context, "You are going to start your study session", 4);
-  await showBigDialog(context, 'Please get rid of any distracting device and turn off your notifications', 4);
-  await showBigDialog(context, "Good results require focus and discipline", 4);
-  await showBigDialog(context, "Good luck!", 3);
+  var timerMode = Provider.of<TimerMode>(context, listen: false);
+  if(timerMode.completedCycles==0){
+    await showBigDialog(context, "You are going to start your study session", 2);
+    await showBigDialog(context, 'Please get rid of any distracting device and turn off your notifications', 3);
+    await showBigDialog(context, "Good results require focus and discipline", 2);
+    await showBigDialog(context, "Good luck!", 2);
+  }
+  else{
+    await showBigDialog(context, "STUDY MODE", 2);
+  }
   Navigator.pushNamed(context, '/page3');
 }
-Future<void> restAnnouncement(BuildContext context) async { // cuando acabe el study mode
-  await showBigDialog(context, "Well done!\nYou have ended your studying round", 4);
-  await showBigDialog(context, 'You may now get up and relax', 4);
-  await showBigDialog(context, 'Go get some water, food\n or to the toilet if needed', 4);
-  await showBigDialog(context, 'See you soon...', 2);
+Future<void> restAnnouncement(BuildContext context) async {
+  var timerMode = Provider.of<TimerMode>(context, listen: false);
+
+  if(timerMode.completedCycles==0){
+  await showBigDialog(context, "Well done!\nYou have ended your studying round", 2);
+  await showBigDialog(context, 'You may now get up and relax', 2);
+  await showBigDialog(context, 'Go get some water, food\n or to the toilet if needed', 2);
+  }
+  else{
+    await showBigDialog(context, "REST MODE", 2);
+  }
   Navigator.pushNamed(context, '/page4');
+}
+Future<void> endAnnouncement(BuildContext context) async {
+  await showBigDialog(context, "Well done!\nYou have ended your session", 2);
+  await showBigDialog(context, 'I\'m very proud of your hard work', 2);
+  await showBigDialog(context, 'See you soon...', 2);
+  Navigator.popAndPushNamed(context, '/page1');
 }
 bool isGoodName(String txt) {
   return txt.isNotEmpty;

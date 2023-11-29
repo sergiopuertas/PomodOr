@@ -40,8 +40,7 @@ abstract class _BasePopupState extends State<BasePopup> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
                 ),
-                content: Container(
-                  width: 200.0,
+                content: Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -99,17 +98,11 @@ abstract class _BasePopupState extends State<BasePopup> {
                               )
                           ),
                         ],
-                      )
+                      ),
+                      submitButton(text: 'Continue', function:()=> acceptInput(context,_nameController, _subjectController), color: Colors.amber[600] as Color,textColor: Colors.black, size: 14.0,),
                     ],
                   ),
                 ),
-                actions: <Widget>[
-                  submitButton(text: 'Continue', function:()=> acceptInput(context,_nameController, _subjectController), color: Colors.black, size: 10.0,),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  submitButton(text: 'Cancel',function:()=> closeAll(context),color: Colors.red, size: 10.0),
-                ],
               )
       );
     }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomodor/auxiliar.dart';
 import 'package:pomodor/screens/Home.dart';
+import 'package:pomodor/Timer/timer_mode.dart';
 import 'package:pomodor/screens/RouteGenerator.dart';
 import 'toDoList/TaskList.dart';
 import 'notifications.dart';
@@ -19,19 +20,20 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    initNotifications();
+    //initNotifications();
     return FutureBuilder(
       future: _initApp(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const MaterialApp(home: CircularProgressIndicator());
-        }
-        else {
-          return ChangeNotifierProvider(
-            create: (context) => TaskList.instance,
+        } else {
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (context) => TaskList.instance),
+              ChangeNotifierProvider(create: (context) => TimerMode.instance),
+            ],
             child: MaterialApp(
               onGenerateRoute: RouteGenerator.generateRoute,
               title: 'Pomod\'or',
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
 
   Future _initApp() async {
     final taskList = await loadTaskList();

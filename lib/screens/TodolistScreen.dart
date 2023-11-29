@@ -14,115 +14,111 @@ class todolistScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var taskList = Provider.of<TaskList>(context);
     return Stack(
-        children: [
-          Container(
-            color: Colors.white,
-            child: null,
-          ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+      children: [
+        Container(
+          color: Colors.white,
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
               ),
-              title: Text(
-                'TO-DO LIST',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: Text(
+                'TO-DO LIST  ',
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 50,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Center(
-                  child: Text(
-                    taskList.calculateCompletedTaskPercentage(),
-                    style: TextStyle(
-                      fontSize: 14,
+
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Center(
+                child: Text(
+                  taskList.calculateCompletedTaskPercentage(),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              OverflowBar(
+                alignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  TextButton( child: const Text(
+                    'Date',
+                    style: const TextStyle(
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
+                  ), onPressed: () {
+                    taskList.order('expDate');
+                  }
                   ),
-                ),
-                OverflowBar(
-                  alignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    TextButton( child: const Text(
-                      'Date',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ), onPressed: () {
-                      taskList.order('expDate');
-                    }
+                  TextButton( child: const Text(
+                    'Urgency',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
-                    TextButton( child: const Text(
-                      'Urgency',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ), onPressed: () {
-                      taskList.order('urgency');
-                    }
-                    ),
-                    TextButton(
-                        child: const Text(
-                          'Subject',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ), onPressed: () {
-                      taskList.order('subject');
-                    }
-                    ),
-                  ],
-                ),
-                Container(
-                  height:695,
-                  child: TaskListItem(list: taskList.getTaskList()),
-                ),
-              ],
-            ),
+                  ), onPressed: () {
+                    taskList.order('urgency');
+                  }
+                  ),
+                  TextButton(
+                      child: const Text(
+                        'Subject',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ), onPressed: () {
+                    taskList.order('subject');
+                  }
+                  ),
+                ],
+              ),
+              Expanded(
+                child: TaskListItem(list: taskList.getTaskList),
+              ),
+            ],
           ),
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                SizedBox(
-                  height: 810,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    DeleteButton(),
-                    AddPopup(),
-                    FinishButton(),
-                  ],
-                )
-              ]
+        ),
+        Positioned( // Usar Positioned para alinear los botones en la parte inferior
+          bottom: 50,
+          left: 15,
+          right: 15,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              DeleteButton(),
+              AddPopup(),
+              FinishButton(),
+            ],
           ),
-        ],
+        ),
+      ],
     );
-    }
+  }
 }
 class FinishButton extends StatelessWidget{
   const FinishButton({Key? key}) : super(key: key);
@@ -133,7 +129,7 @@ class FinishButton extends StatelessWidget{
     return FloatingActionButton(
       heroTag: null,
       backgroundColor: Colors.green,
-      onPressed: tasksChosen(taskList.getTaskList()) ? () {
+      onPressed: tasksChosen(taskList.getTaskList) ? () {
         taskList.finishTasks();
         taskList.order(taskList.getCurrentOrder());
         taskList.unchooseTasks();
@@ -153,7 +149,7 @@ class DeleteButton extends StatelessWidget{
     return FloatingActionButton(
       heroTag: null,
       backgroundColor: Colors.red,
-      onPressed: tasksChosen(taskList.getTaskList()) ? () =>
+      onPressed: tasksChosen(taskList.getTaskList) ? () =>
           showDialog(
             context: context,
             builder: (BuildContext context) {

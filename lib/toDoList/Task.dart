@@ -261,6 +261,7 @@ class Task {
     String _subject = '';
     String _comment = '';
     bool _chosen = false;
+    bool _studied = false;
 
     Task(String name,  String subject,  DateTime expDate,  int diff){
       _name = name;
@@ -344,11 +345,15 @@ class Task {
     }
     void toggleFinished() {
       if(!_finished){
-        cancelTaskNotification(this);
+        //cancelTaskNotification(this);
       }
       else{
-        scheduleNotification(this);
+        //scheduleNotification(this);
       }
       _finished = !_finished;
+    }
+    bool get getIfStudied => _studied;
+    void setStudied(bool value){
+      _studied = value;
     }
 }

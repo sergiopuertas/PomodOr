@@ -1,11 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pomodor/Timer/timer_mode.dart';
-
-import 'package:pomodor/screens/time_selection_screem.dart';
+import 'package:pomodor/screens/time_selection_screen.dart';
 import 'package:provider/provider.dart';
 
 
@@ -21,140 +19,85 @@ class ClockView extends StatefulWidget {
 
 class _ClockViewState extends State<ClockView> {
 
-
-  Future<List<String>> loadMotivationalSentences() async {
-    String fileContent = await rootBundle.loadString(
-        'assets/motivation_4_work.txt');
-    return fileContent.split('\n'); // Splits the file content into lines
-  }
-
-  //sentece list:
-  List<String> motivationalSentences = [];
-  Random random = Random(); // Create a Random object
-  int sentenceIndex = 0;
-
-
-  //time
   late DateTime currentTime; // Store the current time
   late Timer timer;
-
-  //flags
   bool isPaused = false;
-  bool hasStarted = false;
 
-
+  int selectedMinutes = 0;
+  int selectedSeconds = 0;
   @override
   void initState() {
     super.initState();
-    loadMotivationalSentences().then((sentences) {
-      setState(() {
-        motivationalSentences = sentences;
-      });
-    });
-
 
     final timerMode = Provider.of<TimerMode>(context, listen: false);
-    // Set currentTime to the initial Work Mode time
+
     currentTime = timerMode.initialWorkTime;
 
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (!isPaused) {
+      if (!isPaused && timerMode.isOpen) {
         setState(() {
-          int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 +
-              currentTime.second;
+          int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 + currentTime.second;
           if (totalSeconds > 0) {
             currentTime = currentTime.subtract(Duration(seconds: 1));
           } else {
-            // When timer reaches zero, switch modes and reset to the initial time of the new mode
-            timerMode.switchMode();
-            currentTime =
-            timerMode.isWorkMode ? timerMode.initialWorkTime : timerMode
-                .initialRestTime;
-            sentenceIndex = random.nextInt(motivationalSentences.length);
-            // Optionally, if you want to keep the timer paused after switching modes, set isPaused to true
-            // isPaused = true;
-            // Update sentenceIndex every 10 seconds
-
+            currentTime = timerMode.isWorkMode ? timerMode.initialWorkTime : timerMode.initialRestTime;
+            timerMode.switchMode(context);
+            resetTimer();
           }
         });
       }
     });
   }
 
-
-  void resetTimer() {
-    final timerMode = Provider.of<TimerMode>(context, listen: false);
-
-    setState(() {
-      // Reset to the initial time of the current mode
-      currentTime = timerMode.isWorkMode ? timerMode.initialWorkTime : timerMode
-          .initialRestTime;
-      hasStarted = false;
-      isPaused = true; // Ensure the timer is paused
-    });
-  }
-
-
   void pauseTimer() {
     setState(() {
       isPaused = true;
     });
   }
-
   void resumeTimer() {
     setState(() {
       isPaused = false;
-      hasStarted = true;
     });
+  }
+  void resetTimer() {
+    final timerMode = Provider.of<TimerMode>(context, listen: false);
+    setState(() {
+      currentTime = timerMode.isWorkMode ? timerMode.initialWorkTime : timerMode.initialRestTime;
+      isPaused = true;
+    });
+    isPaused = true;
   }
 
   @override
   Widget build(BuildContext context) {
     // Calculate remaining time in minutes and seconds
-    int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 +
-        currentTime.second;
+    int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 + currentTime.second;
     int remainingMinutes = totalSeconds ~/ 60;
     int remainingSeconds = totalSeconds % 60;
-    //sentences:
-    // Use Provider.of to access TimerMode
-    final timerMode = Provider.of<TimerMode>(context, listen: false);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Clock View'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        backgroundColor: Colors.grey[900],
-      ),
-      body: Container(
-        color: Colors.grey[900],
-        child: Center(
+    return Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Transform.rotate(
-                angle: -pi / 2,
+                angle: -pi / 2,  // -90 degrees in radians
                 child: CustomPaint(
                   painter: ClockPainter(currentTime: currentTime),
                   size: Size(300, 300),
                 ),
               ),
               SizedBox(height: 20),
+              // Always display remaining time
               Text(
-                '${remainingMinutes.toString().padLeft(
-                    2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
+                '${remainingMinutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.black,
                   decoration: TextDecoration.none,
                 ),
               ),
-              SizedBox(height: 20),
               IconButton(
-                iconSize: 64,
+                iconSize: 40,
                 icon: Icon(isPaused ? Icons.play_arrow : Icons.pause),
                 onPressed: () {
                   if (isPaused) {
@@ -164,21 +107,8 @@ class _ClockViewState extends State<ClockView> {
                   }
                 },
               ),
-              // Display the sentence when the clock is in rest mode
-
-              if (!timerMode.isWorkMode && motivationalSentences.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    motivationalSentences[sentenceIndex],
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
             ],
           ),
-        ),
-      ),
     );
   }
 }
@@ -264,5 +194,6 @@ class ClockPainter extends CustomPainter {
     return true;
   }
 }
+
 
 

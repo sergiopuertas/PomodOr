@@ -12,8 +12,9 @@ class submitButton extends StatelessWidget{
   final String text;
   final Function function;
   final Color color;
+  final Color textColor;
   final double size;
-  submitButton({Key? key, required this.text,required this.function,required this.color, required this.size}) : super(key: key);
+  submitButton({Key? key, required this.text,required this.function,required this.color,required this.textColor, required this.size}) : super(key: key);
 
   Widget build(BuildContext context){
     return InkWell(
@@ -37,8 +38,8 @@ class submitButton extends StatelessWidget{
           text,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: size > 20 ? 25.0 : 17,
-            color: color==Colors.white ? Colors.black : Colors.white,
+            fontSize: size > 20 ? 25.0 : 20,
+            color: textColor
           ),
         ),
       ),
