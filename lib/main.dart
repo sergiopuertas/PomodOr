@@ -5,6 +5,7 @@ import 'package:pomodor/auxiliar.dart';
 import 'package:pomodor/screens/Home.dart';
 import 'package:pomodor/Timer/timer_mode.dart';
 import 'package:pomodor/screens/RouteGenerator.dart';
+import 'package:pomodor/music.dart';
 import 'toDoList/TaskList.dart';
 import 'notifications.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
     //initNotifications();
     return FutureBuilder(
       future: _initApp(),
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
             providers: [
               ChangeNotifierProvider(create: (context) => TaskList.instance),
               ChangeNotifierProvider(create: (context) => TimerMode.instance),
+              InheritedProvider(create: (context)=> MusicProvider.instance)
             ],
             child: MaterialApp(
               onGenerateRoute: RouteGenerator.generateRoute,
@@ -47,8 +50,6 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-
-
   Future _initApp() async {
     final taskList = await loadTaskList();
     TaskList.instance.setTasks(taskList);

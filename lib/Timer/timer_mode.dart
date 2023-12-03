@@ -9,6 +9,8 @@ import 'clock_view.dart';
 
 class TimerMode with ChangeNotifier {
   TimerMode._privateConstructor();
+  static final TimerMode _instance = TimerMode._privateConstructor();
+  static TimerMode get instance => _instance;
 
   Future<List<String>> loadMotivationalSentences() async {
     String fileContent = await rootBundle.loadString(
@@ -19,9 +21,7 @@ class TimerMode with ChangeNotifier {
   List<String> motivationalSentences = [];
   Random random = Random(); // Create a Random object
   int sentenceIndex = 0;
-  static final TimerMode _instance = TimerMode._privateConstructor();
 
-  static TimerMode get instance => _instance;
 
   bool _isOpen = true;
   bool _isWorkMode = true;
@@ -71,15 +71,12 @@ class TimerMode with ChangeNotifier {
   void switchMode(BuildContext context) {
     _isWorkMode = !_isWorkMode;
     if (!_isWorkMode) {
-      print("end of work");
       sentenceIndex = random.nextInt(motivationalSentences.length);
       restAnnouncement(context);
     }
     else{
-      print("end of rest");
       _completedCycles++;
       if(_completedCycles == numCycles){
-        print("end of session");
         endSession(context, true);
       }
       else workAnnouncement(context);

@@ -1,4 +1,4 @@
 This file is like an agenda to put notes on progress, doubts and to-dos.
 
 Sergio:
-    no entiendo. parece que cuando se pone el workmode se vuelve a hacer initstate y se cambia otra vez a restmode
+    integrar desplegable en el resto del código!

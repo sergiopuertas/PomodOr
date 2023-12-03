@@ -12,6 +12,8 @@ class TaskChoosing extends StatelessWidget {
   TaskChoosing({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var taskList = Provider.of<TaskList>(context);
+    taskList.showMenu(false);
     return Stack(
       textDirection: TextDirection.ltr,
       children: [
@@ -77,7 +79,7 @@ class TaskChoosing extends StatelessWidget {
 
   }
   void Continue(BuildContext context, bool empty){
-    if(!empty) {
+    if(empty) {
       var taskList = Provider.of<TaskList>(context, listen: false);
       studyTasks(context,true);
       taskList.unchooseTasks();

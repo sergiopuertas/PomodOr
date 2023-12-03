@@ -194,6 +194,3 @@ class ClockPainter extends CustomPainter {
     return true;
   }
 }
-
-
-

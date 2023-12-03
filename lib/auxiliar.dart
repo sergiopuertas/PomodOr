@@ -5,6 +5,7 @@ import 'package:pomodor/toDoList/TaskList.dart';
 import 'package:pomodor/toDoList/PopUps/BasePopUp.dart';
 import 'package:pomodor/toDoList/SortingStrategy.dart';
 import 'package:pomodor/Timer/timer_mode.dart';
+import 'package:pomodor/music.dart';
 import 'dart:async';
 import 'dart:math';
 import 'dart:convert';
@@ -13,7 +14,7 @@ void studyTasks(BuildContext context, bool value)  {
   TaskList tasklist = Provider.of<TaskList>(context, listen: false);
   if(value){
     for (var task in  tasklist.getTaskList) {
-      if (task.getIfChosen()) {
+      if (task.getIfChosen) {
         task.setStudied(value);
       }
     }
@@ -46,7 +47,7 @@ List<Task> additions(BuildContext context,List<Task> study ) {
 List<Task> uncompletedTasks(BuildContext context) {
   List<Task> tasks = [];
   for (var task in  Provider.of<TaskList>(context, listen: false).getTaskList) {
-    if (!task.getIfFinished()) {
+    if (!task.getIfFinished) {
       tasks.add(task);
     }
   }
@@ -54,7 +55,7 @@ List<Task> uncompletedTasks(BuildContext context) {
 }
 bool tasksChosen(List<Task> tasks){
   for (var task in  tasks) {
-    if (task.getIfChosen()) {
+    if (task.getIfChosen) {
       return true;
     }
   }
@@ -92,7 +93,7 @@ Future<void> showBigDialog(BuildContext context, String text, int time) async {
   bool isDialogOpen = true;
   showDialog(
     context: context,
-    barrierDismissible: false, // Cambiar a false para evitar cierre manual
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -119,7 +120,6 @@ Future<void> showBigDialog(BuildContext context, String text, int time) async {
       );
     },
   );
-
   await Future.delayed(Duration(seconds: time));
   if (isDialogOpen && Navigator.of(context).canPop()) {
     isDialogOpen = false;
@@ -128,6 +128,11 @@ Future<void> showBigDialog(BuildContext context, String text, int time) async {
 }
 Future<void> workAnnouncement(BuildContext context) async {
   var timerMode = Provider.of<TimerMode>(context, listen: false);
+  var musicProvider = Provider.of<MusicProvider>(context, listen: false);
+
+  if(musicProvider.isPanelVisible.value){
+    musicProvider.togglePanel();
+  }
   if(timerMode.completedCycles==0){
     await showBigDialog(context, "You are going to start your study session", 2);
     await showBigDialog(context, 'Please get rid of any distracting device and turn off your notifications', 3);
@@ -141,11 +146,15 @@ Future<void> workAnnouncement(BuildContext context) async {
 }
 Future<void> restAnnouncement(BuildContext context) async {
   var timerMode = Provider.of<TimerMode>(context, listen: false);
-
+  var musicProvider = Provider.of<MusicProvider>(context, listen: false);
+  if(musicProvider.isPanelVisible.value){
+    musicProvider.togglePanel();
+  }
   if(timerMode.completedCycles==0){
   await showBigDialog(context, "Well done!\nYou have ended your studying round", 2);
   await showBigDialog(context, 'You may now get up and relax', 2);
   await showBigDialog(context, 'Go get some water, food\n or to the toilet if needed', 2);
+  await showBigDialog(context, 'See you in ${timerMode.initialRestTime.minute}...', 2);
   }
   else{
     await showBigDialog(context, "REST MODE", 2);
@@ -167,17 +176,17 @@ bool isGoodSubject(String txt) {
 }
 String dateFormat(Task task) {
   if (task != null) {
-    return task.getDate().day.toString() +
+    return task.getDate.day.toString() +
         "/" +
-        task.getDate().month.toString() +
+        task.getDate.month.toString() +
         "/" +
-        task.getDate().year.toString();
+        task.getDate.year.toString();
   } else {
     return 'Date Missing';
   }
 }
 Color fitColor(Task task) {
-  if (task != null && task.getUrgency().getNumber() == 2) return Colors.black;
+  if (task != null && task.getUrgency.getNumber == 2) return Colors.black;
   return Colors.white;
 }
 class ConstantScrollBehavior extends ScrollBehavior {
@@ -200,4 +209,3 @@ class ConstantScrollBehavior extends ScrollBehavior {
   ScrollPhysics getScrollPhysics(BuildContext context) =>
       const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
 }
-

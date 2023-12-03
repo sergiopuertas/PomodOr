@@ -40,8 +40,7 @@ abstract class _BasePopupState extends State<BasePopup> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
                 ),
-                content: Expanded(
-                  child: Column(
+                content:  Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       InputBox(
@@ -101,7 +100,6 @@ abstract class _BasePopupState extends State<BasePopup> {
                       ),
                       submitButton(text: 'Continue', function:()=> acceptInput(context,_nameController, _subjectController), color: Colors.amber[600] as Color,textColor: Colors.black, size: 14.0,),
                     ],
-                  ),
                 ),
               )
       );
@@ -166,8 +164,8 @@ class EditPopup extends BasePopup {
   _BasePopupState getState() => _EditPopupState(onOverlayEntryRemove, task);
 
   @override
-  String get nameprompt => task.getName();
-  String get subjectprompt => task.getSubject();
+  String get nameprompt => task.getName;
+  String get subjectprompt => task.getSubject;
   @override
   void customAction(BuildContext context, String name, DateTime date, int diff, String subject) {
     Provider.of<TaskList>(context, listen: false).editTask(task, name, date, diff, subject);
@@ -184,7 +182,7 @@ class _EditPopupState extends _BasePopupState {
       icon: Icon(Icons.edit),
       onPressed: (){
         onOverlayEntryRemove();
-        ShowDialog(context,task.getName(),task.getSubject(), task.getDate(), task.getDiff());
+        ShowDialog(context,task.getName,task.getSubject, task.getDate, task.getDiff);
       },
     );
   }

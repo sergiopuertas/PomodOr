@@ -10,7 +10,7 @@ import 'package:pomodor/toDoList/PopUps/BasePopUp.dart';
 import 'package:pomodor/Timer/clock_view.dart';
 import 'package:pomodor/auxiliar.dart';
 import 'package:pomodor/Timer/timer_mode.dart';
-
+import 'package:pomodor/music.dart';
 import 'dart:math';
 import 'dart:async';
 
@@ -35,12 +35,14 @@ class _WorkTimeState extends State<WorkTime> {
   Widget build(BuildContext context) {
     var taskList = Provider.of<TaskList>(context,listen: false);
     var timerMode = Provider.of<TimerMode>(context,listen: false);
-    taskList.changeChoosingProcess(false);
+    taskList.showMenu(false);
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
-      child: Scaffold(
+      child : Stack(
+        children: [
+          Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
@@ -58,8 +60,8 @@ class _WorkTimeState extends State<WorkTime> {
                           TextButton(
                             child: Text("Yes"),
                             onPressed: () {
-                             timerMode.endSession(context, false);
-                             Navigator.popAndPushNamed(context,'/page1');
+                              timerMode.endSession(context, false);
+                              Navigator.popAndPushNamed(context,'/page1');
                             },
                           ),
                           TextButton(
@@ -75,13 +77,13 @@ class _WorkTimeState extends State<WorkTime> {
                 },
               ),
               title:
-                  Text(
-                    'Work!',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30
-                    ),
-                  ),
+              Text(
+                'Work!',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30
+                ),
+              ),
             ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -98,7 +100,7 @@ class _WorkTimeState extends State<WorkTime> {
                   child: TaskListItem(list: taskBeingStudied(context)),
                 ),
                 Expanded(
-                  flex: 1,
+                    flex: 1,
                     child: Column(
                       children: [
                         SizedBox(
@@ -124,7 +126,9 @@ class _WorkTimeState extends State<WorkTime> {
               ],
             ),
           ),
-
+          Music()
+        ],
+      ),
     );
   }
 }
@@ -147,7 +151,7 @@ class AddMoreButton extends StatelessWidget {
   }
 
   void showAddDialog(BuildContext context, List<Task> list) {
-    Provider.of<TaskList>(context, listen: false).changeChoosingProcess(true);
+    Provider.of<TaskList>(context, listen: false).showMenu(false);
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -204,6 +208,6 @@ class AddMoreButton extends StatelessWidget {
     } else {
       showTemporaryDialog(context);
     }
-    Provider.of<TaskList>(context, listen: false).changeChoosingProcess(false);
+    Provider.of<TaskList>(context, listen: false).showMenu(false);
   }
 }

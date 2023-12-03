@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'HomeBody.dart';
 import 'TodolistScreen.dart';
 import 'RouteGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:pomodor/toDoList/TaskList.dart';
 import 'package:pomodor/toDoList/PopUps/submitButton.dart';
 import 'package:pomodor/auxiliar.dart';
-class Home extends StatefulWidget{
-  const Home({super.key});
-  @override
-  _PomodoroHomeState createState() => _PomodoroHomeState();
-}
+import 'package:pomodor/music.dart';
 
-class _PomodoroHomeState extends State<Home>{
+class Home extends StatelessWidget{
+  const Home({super.key});
   @override
   Widget build(BuildContext context){
     return WillPopScope(
@@ -107,7 +103,7 @@ class _PomodoroHomeState extends State<Home>{
                         onPressed: () {
                           var taskList = Provider.of<TaskList>(context, listen: false);
                           taskList.unchooseTasks();
-                          taskList.changeChoosingProcess(true);
+                          taskList.showMenu(true);
                           Navigator.pushNamed(context, '/page2');
                         },
                         child: Text(
@@ -128,7 +124,7 @@ class _PomodoroHomeState extends State<Home>{
                         )
                     ),
                   ),
-                  Positioned( // Usar Positioned para alinear los botones en la parte inferior
+                  Positioned(
                     bottom: 40,
                     left: 30,
                     right: 30,
@@ -139,7 +135,7 @@ class _PomodoroHomeState extends State<Home>{
                       child: TextButton(
                         onPressed: () {
                           var taskList = Provider.of<TaskList>(context, listen: false);
-                          taskList.changeChoosingProcess(false);
+                          taskList.showMenu(false);
                           taskList.unchooseTasks();
                           Navigator.pushNamed(context, '/page6');
                         },
@@ -158,6 +154,7 @@ class _PomodoroHomeState extends State<Home>{
                   ),
                   ],
               ),
+            Music()
             ],
         )
     );

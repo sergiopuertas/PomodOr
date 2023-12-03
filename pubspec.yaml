@@ -36,6 +36,7 @@ dependencies:
   provider: ^6.0.1
   shared_preferences: ^2.0.15
   flutter_local_notifications: ^8.2.0
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -61,10 +62,28 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/back.jpg
     - assets/back3.png
     - assets/watch3.png
     - assets/motivation_4_work.txt
+    - assets/music/chill-medium.mp3
+    - assets/music/chill.mp3
+    - assets/music/chillhop.mp3
+    - assets/music/clear-mind.mp3
+    - assets/music/close-chillhop.mp3
+    - assets/music/eco-tech.mp3
+    - assets/music/home.mp3
+    - assets/music/morning-garden.mp3
+    - assets/music/ocean-choir.mp3
+    - assets/music/one-more-step.mp3
+    - assets/music/please-calm-my-mind.mp3
+    - assets/music/pomodor.mp3
+    - assets/music/science-doc.mp3
+    - assets/music/sleepy-cat.mp3
+    - assets/music/street-food.mp3
+    - assets/music/sweet-darling.mp3
+    - assets/music/valley-of-hope.mp3
+    - assets/music/weekend-vibes.mp3
+    - assets/music/you-have-it.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

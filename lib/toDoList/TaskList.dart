@@ -72,17 +72,14 @@ class TaskList with ChangeNotifier {
     _tasks = await loadTaskList();
     notifyListeners();
   }
-  bool _choosingProcess = false;
-  bool getChoosingProcess(){
-    return _choosingProcess;
-  }
-  void changeChoosingProcess(bool value){
-    _choosingProcess = value;
+  bool _showMenu = false;
+  bool get getShowMenu => _showMenu;
+
+  void showMenu(bool value){
+    _showMenu = value;
   }
 
-  String getCurrentOrder(){
-    return _currentOrder;
-  }
+  String get getCurrentOrder => _currentOrder;
 
   void addTask(String name, DateTime expDate, int diff, String subject) {
     Task task = Task(name, subject, expDate, diff);
@@ -94,7 +91,7 @@ class TaskList with ChangeNotifier {
   }
   void editTask(Task task, String name, DateTime expDate, int diff, String subj) {
     bool changedDate = false;
-    if (task.getDate().difference(expDate) != 0){
+    if (task.getDate.difference(expDate) != 0){
       //cancelTaskNotification(task);
       changedDate = true;
     }
@@ -116,7 +113,7 @@ class TaskList with ChangeNotifier {
       returns =  0;
     }
     else{
-      int completedTasks = _tasks.where((task) => task.getIfFinished()).length;
+      int completedTasks = _tasks.where((task) => task.getIfFinished).length;
       returns = ((completedTasks / _tasks.length) * 100).ceil();
     }
     return 'Tasks completed: ' + returns.toString() + '%';
@@ -138,7 +135,7 @@ class TaskList with ChangeNotifier {
   void deleteTasks() {
     List<Task> tasksToRemove = [];
     for (var task in _tasks) {
-      if (task.getIfChosen()) {
+      if (task.getIfChosen) {
         tasksToRemove.add(task);
       }
     }
@@ -151,7 +148,7 @@ class TaskList with ChangeNotifier {
   }
   void unchooseTasks() {
     for (var task in _tasks) {
-      if (task.getIfChosen()) {
+      if (task.getIfChosen) {
         task.setChosen();
       }
     }
@@ -160,7 +157,7 @@ class TaskList with ChangeNotifier {
   }
   void finishTasks(){
     _tasks.forEach((task) {
-      if(task.getIfChosen()){
+      if(task.getIfChosen){
         toggleTask(task);
       }
     });

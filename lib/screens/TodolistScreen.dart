@@ -7,12 +7,14 @@ import '../toDoList/Task.dart';
 import '../toDoList/SortingStrategy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pomodor/auxiliar.dart';
+import 'package:pomodor/music.dart';
 
 class todolistScreen extends StatelessWidget {
   const todolistScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var taskList = Provider.of<TaskList>(context);
+    taskList.showMenu(true);
     return Stack(
       children: [
         Container(
@@ -131,7 +133,7 @@ class FinishButton extends StatelessWidget{
       backgroundColor: Colors.green,
       onPressed: tasksChosen(taskList.getTaskList) ? () {
         taskList.finishTasks();
-        taskList.order(taskList.getCurrentOrder());
+        taskList.order(taskList.getCurrentOrder);
         taskList.unchooseTasks();
       } : null,
       child: Icon(

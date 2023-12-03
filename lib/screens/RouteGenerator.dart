@@ -5,6 +5,7 @@ import 'package:pomodor/screens/WorkTime.dart';
 import 'package:pomodor/screens/TodolistScreen.dart';
 import 'package:pomodor/screens/TaskChoosing.dart';
 import 'package:pomodor/screens/time_selection_screen.dart';
+import 'package:pomodor/music.dart';
 
 import 'package:pomodor/Timer/clock_view.dart';
 
@@ -36,6 +37,7 @@ class TimeChoosingFactory extends RouteFactory {
   @override
   MaterialPageRoute createRoute() => MaterialPageRoute(builder: (_) => TimeSelectionScreen());
 }
+
 class RouteGenerator {
   static final Map<String, RouteFactory> _routes = {
     '/page1': HomeRouteFactory(),

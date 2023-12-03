@@ -22,7 +22,6 @@ class TaskItem extends StatefulWidget {
 class _TaskItemState extends State<TaskItem> {
   bool isMenuOpen = false;
   OverlayEntry? _overlayEntry;
-
   void _toggleMenu() {
     if (isMenuOpen) {
       _overlayEntry?.remove();
@@ -108,7 +107,7 @@ class _TaskItemState extends State<TaskItem> {
                         setState(() {
                           isMenuOpen = false;
                         });
-                        String savedComment = task.getComment() ?? "";
+                        String savedComment = task.getComment ?? "";
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -158,7 +157,7 @@ class _TaskItemState extends State<TaskItem> {
 
   @override
   Widget build(BuildContext context) {
-    bool place = Provider.of<TaskList>(context, listen: false).getChoosingProcess();
+    bool place = Provider.of<TaskList>(context, listen: false).getShowMenu;
     Task task = widget.task;
     return Consumer<TaskList>(
       builder: (context, taskList, child) {
@@ -169,7 +168,7 @@ class _TaskItemState extends State<TaskItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    task.getName(),
+                    task.getName,
                     style: TextStyle(
                       color: fitColor(task),
                       fontSize: 16,
@@ -181,25 +180,25 @@ class _TaskItemState extends State<TaskItem> {
                     children: [
                       Icon(
                         Icons.star,
-                        color: task.getIfFinished() ? fitColor(task) : Colors.transparent,
+                        color: task.getIfFinished ? fitColor(task) : Colors.transparent,
                       ),
                       SizedBox(
                         width: 10,
                       ),
                       Icon(
                         Icons.timer_off_outlined,
-                        color: task.isTimedOut() ? fitColor(task) : Colors.transparent,
+                        color: task.isTimedout ? fitColor(task) : Colors.transparent,
                       ),
                     ],
                   )
                 ],
               ),
-              tileColor: task.getUrgency().getColor(),
+              tileColor: task.getUrgency.getColor,
               subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    task.getSubject(),
+                    task.getSubject,
                     style: TextStyle(
                       color: fitColor(task),
                       fontSize: 16,
@@ -216,11 +215,11 @@ class _TaskItemState extends State<TaskItem> {
                   ),
                 ],
               ),
-              trailing: !place ? SizedBox(
+              trailing: place ? SizedBox(
                 width: 40,
                 child: FloatingActionButton(
                   heroTag: task.hashCode,
-                  backgroundColor: task.getUrgency().getColor(),
+                  backgroundColor: task.getUrgency.getColor,
                   elevation: 0.0,
                   onPressed: _toggleMenu,
                   child: Icon(
@@ -298,47 +297,31 @@ class Task {
       }
       else return 1;
     }
-    bool isTimedOut(){
-      return this._expDate.isBefore(DateTime.now());
-    }
+    bool get isTimedout => _expDate.isBefore(DateTime.now());
+    bool get getIfFinished => _finished;
+    String get getSubject => _subject;
+    String get getName => _name;
+    DateTime get getDate => _expDate;
+    int get getDiff => _diff;
+    Urgency get getUrgency => _urgency;
+    bool get getIfChosen => _chosen;
+    String get getComment => _comment;
+    bool get getIfStudied => _studied;
+
     void setComment(String comment){
       this._comment = comment;
-    }
-    String getComment(){
-      return this._comment;
-    }
-    bool getIfFinished(){
-      return this._finished;
     }
     void setSubject(String txt){
       this._subject = txt;
     }
-    String getSubject(){
-      return this._subject;
-    }
     void setName(String txt){
       this._name = txt;
-    }
-    String getName(){
-      return this._name;
     }
     void setDate(DateTime time){
       this._expDate = time;
     }
-    DateTime getDate(){
-      return this._expDate;
-    }
     void setDiff(int num){
       this._diff = num;
-    }
-    int getDiff(){
-      return this._diff;
-    }
-    Urgency getUrgency(){
-      return this._urgency;
-    }
-    bool getIfChosen(){
-      return this._chosen;
     }
     void setChosen(){
       this._chosen = !_chosen;
@@ -352,7 +335,6 @@ class Task {
       }
       _finished = !_finished;
     }
-    bool get getIfStudied => _studied;
     void setStudied(bool value){
       _studied = value;
     }

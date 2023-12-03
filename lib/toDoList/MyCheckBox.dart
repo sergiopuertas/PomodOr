@@ -20,7 +20,7 @@ class MyCheckBox extends StatelessWidget {
       onChanged:(bool? newValue){
         Provider.of<TaskList>(context, listen: false).toggleChosen(task);
       },
-      value: task.getIfChosen(),
+      value: task.getIfChosen,
     );
   }
 }

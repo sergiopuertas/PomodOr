@@ -11,10 +11,10 @@ abstract class SortingStrategy {
 class SubjectSortingStrategy implements SortingStrategy {
   @override
   int compare(Task a, Task b) {
-    if (a.getIfFinished() == b.getIfFinished()) {
-      return a.getSubject().toLowerCase().compareTo(b.getSubject().toLowerCase());
+    if (a.getIfFinished == b.getIfFinished) {
+      return a.getSubject.toLowerCase().compareTo(b.getSubject.toLowerCase());
     }
-    return a.getIfFinished() ? 1 : -1;
+    return a.getIfFinished ? 1 : -1;
   }
 }
 
@@ -22,10 +22,10 @@ class SubjectSortingStrategy implements SortingStrategy {
 class ExpDateSortingStrategy implements SortingStrategy {
   @override
   int compare(Task a, Task b) {
-    if (a.getIfFinished() == b.getIfFinished()) {
-      return a.getDate().compareTo(b.getDate());
+    if (a.getIfFinished == b.getIfFinished) {
+      return a.getDate.compareTo(b.getDate);
     }
-    return a.getIfFinished() ? 1 : -1;
+    return a.getIfFinished ? 1 : -1;
   }
 }
 
@@ -33,10 +33,10 @@ class ExpDateSortingStrategy implements SortingStrategy {
 class DefaultSortingStrategy implements SortingStrategy {
   @override
   int compare(Task a, Task b) {
-    if (a.getIfFinished() == b.getIfFinished()) {
-      return -a.getUrgency().getNumber().compareTo(b.getUrgency().getNumber());
+    if (a.getIfFinished == b.getIfFinished) {
+      return -a.getUrgency.getNumber.compareTo(b.getUrgency.getNumber);
     }
-    return a.getIfFinished() ? 1 : -1;
+    return a.getIfFinished ? 1 : -1;
   }
 }
 

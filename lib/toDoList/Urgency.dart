@@ -12,10 +12,6 @@ class Urgency{
     else if (num == 2) return Colors.yellow;
     else return Colors.redAccent;
   }
-  int getNumber(){
-    return this._number;
-  }
-  Color getColor(){
-    return this._color;
-  }
+  int get getNumber =>_number;
+  Color get getColor => _color;
 }
