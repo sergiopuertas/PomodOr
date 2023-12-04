@@ -25,6 +25,9 @@ class _ClockViewState extends State<ClockView> {
 
   int selectedMinutes = 0;
   int selectedSeconds = 0;
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +51,27 @@ class _ClockViewState extends State<ClockView> {
       }
     });
   }
+  void showTimerNotification() {
+    // Format the time
+    String formattedTime = '${currentTime.hour.toString().padLeft(2, '0')}:${currentTime.minute.toString().padLeft(2, '0')}:${currentTime.second.toString().padLeft(2, '0')}';
+
+    // Create notification details
+    var androidDetails = AndroidNotificationDetails(//we don't need a Unique Id for each notification because they will not be more than 1 timer at the same time
+      'channelId', 'channelName', 'channelDescription',
+      importance: Importance.max,
+      priority: Priority.high,
+      ongoing: true, // Makes the notification permanent
+    );
+    var iosDetails = IOSNotificationDetails();
+    var generalNotificationDetails = NotificationDetails(android: androidDetails, iOS: iosDetails);
+
+    flutterLocalNotificationsPlugin.show(
+      0, // Notification ID
+      'Timer', // Title
+      formattedTime, // Body
+      generalNotificationDetails,
+    );
+  }
 
   void pauseTimer() {
     setState(() {
@@ -67,6 +91,7 @@ class _ClockViewState extends State<ClockView> {
     });
     isPaused = true;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +127,7 @@ class _ClockViewState extends State<ClockView> {
                 onPressed: () {
                   if (isPaused) {
                     resumeTimer();
+                    showTimerNotification();
                   } else {
                     pauseTimer();
                   }
