@@ -1,4 +1,5 @@
 This file is like an agenda to put notes on progress, doubts and to-dos.
 
-Sergio:
-    integrar desplegable en el resto del código!
+Cosas que quedan:
+    Arreglar lo de las notificaciones permanentes IOS
+    Poner sonidos en las fases.

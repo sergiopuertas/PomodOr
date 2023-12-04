@@ -12,35 +12,24 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initNotifications();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-      .then((_) {
-    runApp(MyApp());
+  initNotifications();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(Pomodor());
   });
 }
-Future<void> initNotifications() async {
-  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  var initializationSettingsIOS = IOSInitializationSettings();
-  var initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-}
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+
+class Pomodor extends StatelessWidget {
+  Pomodor({super.key});
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
-    //initNotifications();
+
     return FutureBuilder(
       future: _initApp(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const MaterialApp(home: CircularProgressIndicator());
-        } else {
           return MultiProvider(
             providers: [
               ChangeNotifierProvider(create: (context) => TaskList.instance),
@@ -56,7 +45,6 @@ class MyApp extends StatelessWidget {
               initialRoute: '/page1',
             ),
           );
-        }
       },
     );
   }

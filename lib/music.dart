@@ -153,7 +153,7 @@ class _MusicState extends State<Music> {
             )
           ),
         Positioned(
-          top: 65,
+          top: 60,
           left: 0,
           child: ValueListenableBuilder<bool>(
             valueListenable: musicProvider.isPanelVisible ?? ValueNotifier<bool>(false),

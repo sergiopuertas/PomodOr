@@ -54,7 +54,11 @@ class _RestTimeState extends State<RestTime> {
                       builder:(BuildContext context) {
                         return AlertDialog(
                           content: const Text(
-                              "Are you sure you want to finish the session?"),
+                              "Are you sure you want to finish the session?",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
                           actions: <Widget>[
                             TextButton(
                               child: const Text("Yes"),

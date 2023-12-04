@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 
 class ClockView extends StatefulWidget {
-  final DateTime initialTime; //
+  final DateTime initialTime;
 
   ClockView({required this.initialTime,});
 
@@ -22,20 +22,18 @@ class _ClockViewState extends State<ClockView> {
   late DateTime currentTime; // Store the current time
   late Timer timer;
   bool isPaused = false;
-
+  int i=0;
   int selectedMinutes = 0;
   int selectedSeconds = 0;
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
-
     final timerMode = Provider.of<TimerMode>(context, listen: false);
-
     currentTime = timerMode.initialWorkTime;
-
+    showTimerNotification();
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (!isPaused && timerMode.isOpen) {
         setState(() {
@@ -51,27 +49,38 @@ class _ClockViewState extends State<ClockView> {
       }
     });
   }
+
   void showTimerNotification() {
-    // Format the time
+
     String formattedTime = '${currentTime.hour.toString().padLeft(2, '0')}:${currentTime.minute.toString().padLeft(2, '0')}:${currentTime.second.toString().padLeft(2, '0')}';
 
-    // Create notification details
-    var androidDetails = AndroidNotificationDetails(//we don't need a Unique Id for each notification because they will not be more than 1 timer at the same time
-      'channelId', 'channelName', 'channelDescription',
+    var androidDetails = AndroidNotificationDetails(
+      'task_channel', // ID del canal
+      'Session running', // Título del canal
+      'Your session timer', // Descripción del canal
       importance: Importance.max,
       priority: Priority.high,
-      ongoing: true, // Makes the notification permanent
+      ongoing: true, // Hace que la notificación sea permanente
+      showWhen: false, // Oculta la marca de tiempo de la notificación
     );
-    var iosDetails = IOSNotificationDetails();
-    var generalNotificationDetails = NotificationDetails(android: androidDetails, iOS: iosDetails);
 
+    var iosDetails = IOSNotificationDetails();
+
+    // Detalles generales de la notificación
+    var generalNotificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
+    // Muestra la notificación
     flutterLocalNotificationsPlugin.show(
-      0, // Notification ID
-      'Timer', // Title
-      formattedTime, // Body
+      i++, // ID de la notificación
+      'Timer', // Título
+      formattedTime, // Cuerpo
       generalNotificationDetails,
     );
   }
+
 
   void pauseTimer() {
     setState(() {
@@ -127,7 +136,6 @@ class _ClockViewState extends State<ClockView> {
                 onPressed: () {
                   if (isPaused) {
                     resumeTimer();
-                    showTimerNotification();
                   } else {
                     pauseTimer();
                   }

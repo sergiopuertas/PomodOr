@@ -60,7 +60,7 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
             toolbarHeight:  MediaQuery.of(context).size.height/6,
             flexibleSpace: Column(
               children: <Widget>[
-                SizedBox(height: 80),
+                const Spacer(),
                 Text(
                   'CHOOSE THE TIME\nDISTRIBUTION',
                   textAlign: TextAlign.center,
@@ -78,13 +78,13 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "Number of cycles: ",
+                      "Choose Cycles",
                       style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold
                       ),
                     ),
@@ -100,7 +100,7 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                               value: index + 1,
                               child: Text(
                                 '${index+1}',
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.justify,
                               ),
                             ),
                       ),
@@ -116,33 +116,35 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Predefined Distributions",
+                        "Predefined",
                         style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold
                         ),
                       ),
                       SizedBox(
-                        height: 35,
+                        height: 25,
                       ),
-                      presetButton(25,5, 'Work 25 / Rest 5'),
-                      presetButton(50, 10, 'Work 50 / Rest 10'),
-                      presetButton(90, 30, 'Work 90 / Rest 30'),
-
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          presetButton(25,5, '25 / 5'),
+                          presetButton(50, 10, '50 / 10'),
+                          presetButton(90, 30, '90 / 30'),
+                        ],
+                      )
                     ],
                   ),
-
                 Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "Customized Distribution",
+                        "Customized",
                         style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 28,
                             fontWeight: FontWeight.bold
                         ),
                       ),
-
                       SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -150,13 +152,14 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                            Column(
                               children: [
                                 Text(
-                                    "Study Minutes",
+                                    "Study",
                                   style: TextStyle(
-                                    fontSize: 16
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold
                                   ),
                                 ),
                                 DropdownButton<int>(
-                                  iconSize: 40,
+                                  iconSize: 30,
                                   borderRadius: BorderRadius.circular(30.0),
                                   value: selectedStudyMinutes,
                                   items: List.generate(
@@ -165,7 +168,8 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                                         DropdownMenuItem(
                                           value: 5 + index*5,
                                           child: Text('${5 + index*5}',
-                                            textAlign: TextAlign.center,),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
                                   ),
                                   onChanged: (value) {
@@ -180,13 +184,14 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                           Column(
                               children: [
                                 Text(
-                                  "Rest Minutes",
+                                  "Rest",
                                   style: TextStyle(
-                                      fontSize: 16
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
                                   ),
                                 ),
                                 DropdownButton<int>(
-                                  iconSize: 40,
+                                  iconSize: 30,
                                   borderRadius: BorderRadius.circular(30.0),
                                   value: selectedRestMinutes,
                                   items: List.generate(

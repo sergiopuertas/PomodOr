@@ -55,7 +55,12 @@ class _WorkTimeState extends State<WorkTime> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        content: Text("Are you sure you want to finish the session?"),
+                        content: Text(
+                            "Are you sure you want to finish the session?",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
                         actions: <Widget>[
                           TextButton(
                             child: Text("Yes"),
