@@ -110,7 +110,7 @@ class _ClockViewState extends State<ClockView> {
                   size: Size(300, 300),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               // Always display remaining time
               Text(
                 '${remainingMinutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',

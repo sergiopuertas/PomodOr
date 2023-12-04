@@ -50,7 +50,7 @@ class _InputBoxState extends State<InputBox> {
         SizedBox(
           height: 70,
           child: TextField(
-            maxLength: 18,
+            maxLength: 30,
             controller: this.textEditingController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),

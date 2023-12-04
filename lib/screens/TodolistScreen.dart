@@ -37,7 +37,7 @@ class todolistScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 50,
+                  fontSize: 48,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),

@@ -68,14 +68,19 @@ class _MyDiffPickerState extends State<MyDiffPicker> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FloatingActionButton(
-          onPressed: _openDifficultyPicker,
-          child: Icon(Icons.directions_run_rounded),
+        Expanded(
+          flex: 3,
+            child: FloatingActionButton(
+                    onPressed: _openDifficultyPicker,
+                    child: Icon(Icons.directions_run_rounded),
+                  )
         ),
         SizedBox(height: 10.0),
-        Text(
-          getDifficultyText(selectedDiff),
-          style: TextStyle(fontSize: 12),
+        Expanded(
+            child: Text(
+                    getDifficultyText(selectedDiff),
+                    style: TextStyle(fontSize: 12),
+            )
         ),
       ],
     );

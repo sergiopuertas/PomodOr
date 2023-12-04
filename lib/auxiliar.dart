@@ -24,19 +24,10 @@ void studyTasks(BuildContext context, bool value)  {
       task.setStudied(value);
     }
   }
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    Provider.of<TaskList>(context, listen: false).unchooseTasks();
-  });
 }
 List<Task> taskBeingStudied(BuildContext context){
-  List<Task> taskBeingStudied = [];
-  TaskList tasklist = Provider.of<TaskList>(context, listen: false);
-  for (var task in  tasklist.getTaskList) {
-    if (task.getIfStudied) {
-      taskBeingStudied.add(task);
-    }
-  }
-  return taskBeingStudied;
+  var tasklist = Provider.of<TaskList>(context, listen: false);
+  return tasklist.getTaskList.where((task) => task.getIfStudied).toList();
 }
 
 List<Task> additions(BuildContext context,List<Task> study ) {
@@ -45,13 +36,8 @@ List<Task> additions(BuildContext context,List<Task> study ) {
   return uncompleted;
 }
 List<Task> uncompletedTasks(BuildContext context) {
-  List<Task> tasks = [];
-  for (var task in  Provider.of<TaskList>(context, listen: false).getTaskList) {
-    if (!task.getIfFinished) {
-      tasks.add(task);
-    }
-  }
-  return tasks;
+  var tasklist = Provider.of<TaskList>(context, listen: false);
+  return tasklist.getTaskList.where((task) => !task.getIfFinished).toList();
 }
 bool tasksChosen(List<Task> tasks){
   for (var task in  tasks) {
@@ -134,7 +120,7 @@ Future<void> workAnnouncement(BuildContext context) async {
     musicProvider.togglePanel();
   }
   if(timerMode.completedCycles==0){
-    await showBigDialog(context, "You are going to start your study session", 2);
+   await showBigDialog(context, "You are going to start your study session", 2);
     await showBigDialog(context, 'Please get rid of any distracting device and turn off your notifications', 3);
     await showBigDialog(context, "Good results require focus and discipline", 2);
     await showBigDialog(context, "Good luck!", 2);
@@ -155,7 +141,9 @@ Future<void> restAnnouncement(BuildContext context) async {
   await showBigDialog(context, 'You may now get up and relax', 2);
   await showBigDialog(context, 'Go get some water, food\n or to the toilet if needed', 2);
   await showBigDialog(context, 'See you in ${timerMode.initialRestTime.minute}...', 2);
+
   }
+
   else{
     await showBigDialog(context, "REST MODE", 2);
   }

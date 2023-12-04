@@ -89,20 +89,20 @@ class _RestTimeState extends State<RestTime> {
                     flex: 4,
                     child:  Column(
                       children: [
-                        ClockView(initialTime: Provider.of<TimerMode>(context).initialWorkTime),
                         Center(
                           child: Text('Cycle number ${timerMode.completedCycles+1} '),
                         ),
+                        ClockView(initialTime: Provider.of<TimerMode>(context).initialRestTime),
                       ],
                     )
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       timerMode.motivationalSentences[timerMode.sentenceIndex],
-                      style: TextStyle(color: Colors.black, fontSize: 16),
+                      style: TextStyle(color: Colors.black, fontSize: 24),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -110,7 +110,7 @@ class _RestTimeState extends State<RestTime> {
               ],
             ),
           ),
-          Music()
+          Music(home:false)
         ],
       )
     );

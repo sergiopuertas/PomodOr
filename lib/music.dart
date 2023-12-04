@@ -115,19 +115,26 @@ class MusicProvider extends InheritedWidget {
 }
 
 class Music extends StatefulWidget {
-  Music({Key? key}) : super(key: key);
+  final bool home;
+  Music({Key? key, required this.home}) : super(key: key);
   @override
-  _MusicState createState() => _MusicState();
+  _MusicState createState() => _MusicState(home: this.home);
 }
 class _MusicState extends State<Music> {
+  final bool home;
+  _MusicState({required this.home});
   @override
   Widget build(BuildContext context) {
     var musicProvider = MusicProvider.instance;
+    double locationx = home ? MediaQuery.of(context).size.width*0.42 : MediaQuery.of(context).size.width*0.75;
+    double locationy = home ? MediaQuery.of(context).size.height*0.73 : 65;
+    Color color = home ? Colors.amber[200] as Color : Colors.white;
+
     return Stack(
       children: [
          Positioned(
-            top: 33,
-            right: 20,
+            top: locationy,
+            left:locationx,
             child : Material(
               color: Colors.transparent,
               child: OutlinedButton(
@@ -135,18 +142,19 @@ class _MusicState extends State<Music> {
                 child: Icon(
                     Icons.music_note_sharp,
                     color: Colors.black,
+                  size: 40,
                 ),
                 style:  ButtonStyle(
                       padding: MaterialStateProperty.all(EdgeInsets.all(10)),
                       shape: MaterialStateProperty.all(CircleBorder()),
-                      backgroundColor: MaterialStateProperty.all(Colors.transparent)
+                      backgroundColor: MaterialStateProperty.all(color)
                   )
               )
             )
           ),
         Positioned(
-          top: 78,
-          right: 0,
+          top: 65,
+          left: 0,
           child: ValueListenableBuilder<bool>(
             valueListenable: musicProvider.isPanelVisible ?? ValueNotifier<bool>(false),
             builder: (context, isPanelVisible, child) {

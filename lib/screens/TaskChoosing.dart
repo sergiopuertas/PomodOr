@@ -76,15 +76,17 @@ class TaskChoosing extends StatelessWidget {
         ),
       ],
     );
-
   }
   void Continue(BuildContext context, bool empty){
+    var taskList = Provider.of<TaskList>(context, listen: false);
     if(empty) {
-      var taskList = Provider.of<TaskList>(context, listen: false);
-      studyTasks(context,true);
       taskList.unchooseTasks();
       Navigator.pushNamed(context, '/page5');
     }
-    else tasksChosen(uncompletedTasks(context)) ? Navigator.pushNamed(context, '/page5') : showTemporaryDialog(context);
+    else {
+      studyTasks(context,true);
+      tasksChosen(uncompletedTasks(context)) ? Navigator.pushNamed(context, '/page5') : showTemporaryDialog(context);
+      taskList.unchooseTasks();
+    }
   }
 }
