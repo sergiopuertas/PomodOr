@@ -69,7 +69,7 @@ class Home extends StatelessWidget{
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           backgroundColor: Colors.white,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontStyle: FontStyle.italic,
                           color: Colors.black54,
                         ),
@@ -154,7 +154,7 @@ class Home extends StatelessWidget{
                   ),
                   ],
               ),
-            Music()
+            Music(home:true)
             ],
         )
     );

@@ -57,7 +57,11 @@ class TaskList with ChangeNotifier {
   List<Task> _tasks = [];
   List<Task> get getTaskList => _tasks;
 
+  bool _showMenu = false;
+  bool get getShowMenu => _showMenu;
   String _currentOrder = 'expDate';
+  String get getCurrentOrder => _currentOrder;
+
   void setTasks(List<Task> tasks) {
     _tasks = tasks;
     notifyListeners();
@@ -72,14 +76,11 @@ class TaskList with ChangeNotifier {
     _tasks = await loadTaskList();
     notifyListeners();
   }
-  bool _showMenu = false;
-  bool get getShowMenu => _showMenu;
+
 
   void showMenu(bool value){
     _showMenu = value;
   }
-
-  String get getCurrentOrder => _currentOrder;
 
   void addTask(String name, DateTime expDate, int diff, String subject) {
     Task task = Task(name, subject, expDate, diff);

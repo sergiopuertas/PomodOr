@@ -89,23 +89,28 @@ class _WorkTimeState extends State<WorkTime> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Expanded(
-                  flex: 5,
-                  child:  ClockView(initialTime: timerMode.initialWorkTime),
+                    flex: 9,
+                    child:  Column(
+                      children: [
+                        Center(
+                          child: Text('Cycle number ${timerMode.completedCycles+1} '),
+                        ),
+                        ClockView(initialTime: timerMode.initialWorkTime),
+                      ],
+                    )
                 ),
-                Center(
-                  child: Text('Cycle number ${timerMode.completedCycles+1} '),
+                Consumer<TaskList>(builder: (context, taskList, child) {
+                  return  Expanded(
+                    flex: 4,
+                    child: TaskListItem(list: taskBeingStudied(context)),
+                    );
+                  }
                 ),
                 Expanded(
-                  flex: 3,
-                  child: TaskListItem(list: taskBeingStudied(context)),
-                ),
-                Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 5,
-                        ),
+                        SizedBox(height: 5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -117,19 +122,26 @@ class _WorkTimeState extends State<WorkTime> {
                             FinishButton(),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        )
+                        SizedBox(height: 5)
                       ],
                     )
                 )
               ],
             ),
           ),
-          Music()
+          Music(home:false)
         ],
       ),
     );
+  }
+  void deleteAndReturn(BuildContext context, List<Task> list) {
+    var taskList = Provider.of<TaskList>(context, listen: false);
+    for (var task in list){
+      if(!taskList.getTaskList.contains(task)){
+        list.remove(task);
+      }
+    }
+    taskList.notifyListeners();
   }
 }
 class AddMoreButton extends StatelessWidget {
@@ -195,6 +207,7 @@ class AddMoreButton extends StatelessWidget {
       },
     );
   }
+
   void addAndReturn(BuildContext context) {
     var taskList = Provider.of<TaskList>(context, listen: false);
     var list = taskList.getTaskList;

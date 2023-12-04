@@ -53,50 +53,29 @@ abstract class _BasePopupState extends State<BasePopup> {
                         parameter: widget.subjectprompt,
                         textEditingController: _subjectController,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          SizedBox(
-                              height: 120,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 100,
-                                    child: Container(
-                                      padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-                                      child: Center(
-                                        child: MyDateSelector(
-                                          onDateSelected: (DateTime newDate) {
-                                            _chosenDate = newDate;
-                                          },
-                                          chosenDate: _chosenDate,
-                                        )
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                          ),
-                          SizedBox(
-                              height: 80,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 80,
-                                    child: MyDiffPicker(
-                                      onDifficultySelected: (int newDifficulty) {
-                                        _selectedDiff = newDifficulty;
-                                      },
-                                      selectedDiff: _selectedDiff,
-                                    )
-                                  ),
-                                ],
-                              )
-                          ),
-                        ],
+                      SizedBox(
+                        height: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Expanded(
+                                child: MyDateSelector(
+                                  onDateSelected: (DateTime newDate) {
+                                    _chosenDate = newDate;
+                                  },
+                                  chosenDate: _chosenDate,
+                                )
+                            ),
+                            Expanded(
+                                child: MyDiffPicker(
+                                  onDifficultySelected: (int newDifficulty) {
+                                    _selectedDiff = newDifficulty;
+                                  },
+                                  selectedDiff: _selectedDiff,
+                                )
+                            ),
+                          ],
+                        ),
                       ),
                       submitButton(text: 'Continue', function:()=> acceptInput(context,_nameController, _subjectController), color: Colors.amber[600] as Color,textColor: Colors.black, size: 14.0,),
                     ],

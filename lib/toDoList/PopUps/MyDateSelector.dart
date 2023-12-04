@@ -38,16 +38,21 @@ class _MyDateSelectorState extends State<MyDateSelector> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FloatingActionButton(
-          onPressed: () => _selectDate(context),
-          child: Icon(Icons.calendar_month_outlined),
+        Expanded(
+          flex: 3,
+            child: FloatingActionButton(
+              onPressed: () => _selectDate(context),
+              child: Icon(Icons.calendar_month_outlined),
+            )
         ),
         SizedBox(
           height: 10.0,
         ),
-        Text(
-          '${chosenDate.toLocal()}'.split(' ')[0],
-          style: TextStyle(fontSize: 10),
+        Expanded(
+            child: Text(
+              '${chosenDate.day}' + '-' + '${chosenDate.month}' + '-' + '${chosenDate.year}',
+              style: TextStyle(fontSize: 10),
+            ),
         ),
       ],
     );

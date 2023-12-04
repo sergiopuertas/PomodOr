@@ -33,7 +33,7 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                     ),
                   ),
                   onPressed: () {
-                    timerMode.setTimes(1, 1);
+                    timerMode.setTimes(workMinutes, restMinutes);
                     timerMode.setNumCycles(selectedCycles);
                     timerMode.startSession();
                     workAnnouncement(context);
@@ -90,6 +90,7 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                     ),
                     DropdownButton<int>(
                       iconSize: 40,
+                      elevation: 0,
                       borderRadius: BorderRadius.circular(30.0),
                       value: selectedCycles,
                       items: List.generate(
@@ -189,7 +190,7 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                                   borderRadius: BorderRadius.circular(30.0),
                                   value: selectedRestMinutes,
                                   items: List.generate(
-                                    24,
+                                    12,
                                         (index) =>
                                         DropdownMenuItem(
                                           value: 5 + index*5,
@@ -207,11 +208,11 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                             ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       presetButton(selectedStudyMinutes, selectedStudyMinutes, 'Set Custom Time'),
                     ],
                   ),
-                SizedBox(height: 40),
+                SizedBox(height: 30),
                 ],
                 ),
 
