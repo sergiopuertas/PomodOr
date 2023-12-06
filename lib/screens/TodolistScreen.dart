@@ -105,7 +105,7 @@ class todolistScreen extends StatelessWidget {
             ],
           ),
         ),
-        Positioned( // Usar Positioned para alinear los botones en la parte inferior
+        Positioned( //
           bottom: 50,
           left: 15,
           right: 15,

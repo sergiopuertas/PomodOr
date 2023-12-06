@@ -34,9 +34,9 @@ Future<void> scheduleNotification(Task task) async {
 
     await flutterLocalNotificationsPlugin.schedule(
       task.hashCode,
-      'Tarea próxima a expirar', // Título de la notificación
-      'La tarea "${task.getName}" expira mañana.', // Cuerpo de la notificación
-      scheduledNotificationDateTime, // Fecha y hora para la notificación
+      'Tarea próxima a expirar',
+      'La tarea "${task.getName}" expira mañana.',
+      scheduledNotificationDateTime,
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
     );
