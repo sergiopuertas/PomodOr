@@ -62,11 +62,11 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
               children: <Widget>[
                 Center(
                   child: Text(
-                    '\n\nCHOOSE THE TIME\nDISTRIBUTION',
+                    '\n\nCHOOSE YOUR TIME\nDISTRIBUTION',
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 32,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -86,9 +86,11 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                       "Choose Cycles",
                       style: TextStyle(
                           fontSize: 28,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
+                    SizedBox(height: 15),
                     DropdownButton<int>(
                       iconSize: 40,
                       elevation: 0,
@@ -102,6 +104,9 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                               child: Text(
                                 '${index+1}',
                                 textAlign: TextAlign.justify,
+                                style: TextStyle(
+                                  fontSize: 20
+                                ),
                               ),
                             ),
                       ),
@@ -119,8 +124,9 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                       Text(
                         "Predefined",
                         style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
                       SizedBox(
@@ -143,7 +149,8 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                         "Customized",
                         style: TextStyle(
                             fontSize: 28,
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
                       SizedBox(height: 20),
@@ -156,7 +163,8 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                                     "Study",
                                   style: TextStyle(
                                     fontSize: 16,
-                                    fontWeight: FontWeight.bold
+                                    fontWeight: FontWeight.bold,
+
                                   ),
                                 ),
                                 DropdownButton<int>(
@@ -170,6 +178,9 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                                           value: 5 + index*5,
                                           child: Text('${5 + index*5}',
                                             textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
                                           ),
                                         ),
                                   ),
@@ -201,7 +212,11 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                                         DropdownMenuItem(
                                           value: 5 + index*5,
                                           child: Text('${5+index*5}',
-                                            textAlign: TextAlign.center,),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 20
+                                            ),
+                                          ),
                                         ),
                                   ),
                                   onChanged: (value) {
