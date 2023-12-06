@@ -94,7 +94,7 @@ class _WorkTimeState extends State<WorkTime> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Expanded(
-                    flex: 9,
+                    flex: 10,
                     child:  Column(
                       children: [
                         Center(
@@ -104,12 +104,12 @@ class _WorkTimeState extends State<WorkTime> {
                       ],
                     )
                 ),
-                Consumer<TaskList>(builder: (context, taskList, child) {
-                  return  Expanded(
-                    flex: 4,
-                    child: TaskListItem(list: taskBeingStudied(context)),
-                    );
-                  }
+                Expanded(
+                  flex: 4,
+                  child: Consumer<TaskList>(builder: (context, taskList, child) {
+                    return  TaskListItem(list: taskBeingStudied(context));
+                    }
+                  ),
                 ),
                 Expanded(
                     flex: 2,
