@@ -5,6 +5,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pomodor/Timer/timer_mode.dart';
 import 'package:pomodor/screens/time_selection_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:pomodor/notifications.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:pomodor/music.dart';
 
 
 
@@ -29,56 +32,31 @@ class _ClockViewState extends State<ClockView> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     final timerMode = Provider.of<TimerMode>(context, listen: false);
+    final musicProvider = Provider.of<MusicProvider>(context, listen: false);
+
     currentTime = timerMode.initialWorkTime;
-    showTimerNotification();
+
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (!isPaused && timerMode.isOpen) {
         setState(() {
-          int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 + currentTime.second;
+          int totalSeconds = currentTime.hour * 3600 + currentTime.minute * 60 +
+              currentTime.second;
           if (totalSeconds > 0) {
             currentTime = currentTime.subtract(Duration(seconds: 1));
           } else {
+            musicProvider.player.stop();
             currentTime = timerMode.isWorkMode ? timerMode.initialWorkTime : timerMode.initialRestTime;
+
             timerMode.switchMode(context);
+            //showTimerNotification(currentTime);
             resetTimer();
           }
         });
       }
     });
-  }
-
-  void showTimerNotification() {
-
-    String formattedTime = '${currentTime.hour.toString().padLeft(2, '0')}:${currentTime.minute.toString().padLeft(2, '0')}:${currentTime.second.toString().padLeft(2, '0')}';
-
-    var androidDetails = AndroidNotificationDetails(
-      'task_channel', // ID del canal
-      'Session running', // Título del canal
-      'Your session timer', // Descripción del canal
-      importance: Importance.max,
-      priority: Priority.high,
-      ongoing: true, // Hace que la notificación sea permanente
-      showWhen: false, // Oculta la marca de tiempo de la notificación
-    );
-
-    var iosDetails = IOSNotificationDetails();
-
-    // Detalles generales de la notificación
-    var generalNotificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
-
-    // Muestra la notificación
-    flutterLocalNotificationsPlugin.show(
-      i++, // ID de la notificación
-      'Timer', // Título
-      formattedTime, // Cuerpo
-      generalNotificationDetails,
-    );
   }
 
 
@@ -100,6 +78,7 @@ class _ClockViewState extends State<ClockView> {
     });
     isPaused = true;
   }
+
 
 
   @override

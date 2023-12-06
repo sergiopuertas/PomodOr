@@ -33,7 +33,7 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                     ),
                   ),
                   onPressed: () {
-                    timerMode.setTimes(workMinutes, restMinutes);
+                    timerMode.setTimes(1, 1);
                     timerMode.setNumCycles(selectedCycles);
                     timerMode.startSession();
                     workAnnouncement(context);

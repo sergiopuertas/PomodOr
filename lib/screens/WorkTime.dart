@@ -119,10 +119,21 @@ class _WorkTimeState extends State<WorkTime> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            DeleteButton(),
-                            AddMoreButton(
-                              list: additions(context, taskBeingStudied(context)),
-                              onAdd:(context)=> addTasksToStudyList(context),
+                          FloatingActionButton(
+                              heroTag: null,
+                              backgroundColor: Colors.deepOrange,
+                              onPressed:()=> deleteAndReturn( context, taskBeingStudied(context)),
+                              child: Icon(
+                                Icons.visibility_outlined,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Consumer<TaskList>(builder: (context, taskList, child) {
+                              return  AddMoreButton(
+                                list: additions(context, taskBeingStudied(context)),
+                                onAdd:(context)=> addTasksToStudyList(context),
+                              );
+                            }
                             ),
                             FinishButton(),
                           ],
@@ -141,13 +152,17 @@ class _WorkTimeState extends State<WorkTime> {
   }
   void deleteAndReturn(BuildContext context, List<Task> list) {
     var taskList = Provider.of<TaskList>(context, listen: false);
-    for (var task in list){
-      if(!taskList.getTaskList.contains(task)){
-        list.remove(task);
+    if (tasksChosen(list)) {
+      for (var task in list) {
+        if (task.getIfChosen) {
+          task.setStudied(false);
+        }
       }
+      taskList.unchooseTasks();
+      taskList.notifyListeners();
     }
-    taskList.notifyListeners();
   }
+
 }
 class AddMoreButton extends StatelessWidget {
   final List<Task> list;
@@ -222,9 +237,11 @@ class AddMoreButton extends StatelessWidget {
         Provider.of<TaskList>(context, listen: false).unchooseTasks();
       });
       onAdd(context);
+
       Navigator.pop(context);
     } else {
       showTemporaryDialog(context);
+
     }
     Provider.of<TaskList>(context, listen: false).showMenu(false);
   }

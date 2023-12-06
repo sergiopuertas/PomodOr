@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:pomodor/toDoList/Task.dart';
 import 'package:pomodor/toDoList/TaskList.dart';
 import 'package:pomodor/toDoList/PopUps/BasePopUp.dart';
@@ -112,6 +113,25 @@ Future<void> showBigDialog(BuildContext context, String text, int time) async {
     Navigator.of(context).pop();
   }
 }
+void soundNotification(BuildContext context, String song, int seconds) async {
+  var musicProvider = Provider.of<MusicProvider>(context, listen: false);
+
+  bool wasPlaying = musicProvider.playing.value;
+  Duration? currentPosition;
+
+  if (wasPlaying) {
+    currentPosition = await musicProvider.player.getCurrentPosition();
+    await musicProvider.pauseMusic();
+  }
+  await musicProvider.notiplayer.play(AssetSource(song));
+  await Future.delayed(Duration(seconds: seconds));
+  await musicProvider.notiplayer.stop();
+  if (wasPlaying) {
+    await musicProvider.player.seek(currentPosition!);
+    await musicProvider.playMusic();
+  }
+}
+
 Future<void> workAnnouncement(BuildContext context) async {
   var timerMode = Provider.of<TimerMode>(context, listen: false);
   var musicProvider = Provider.of<MusicProvider>(context, listen: false);
@@ -120,36 +140,41 @@ Future<void> workAnnouncement(BuildContext context) async {
     musicProvider.togglePanel();
   }
   if(timerMode.completedCycles==0){
-   await showBigDialog(context, "You are going to start your study session", 2);
+    await showBigDialog(context, "You are going to start your study session", 2);
     await showBigDialog(context, 'Please get rid of any distracting device and turn off your notifications', 3);
     await showBigDialog(context, "Good results require focus and discipline", 2);
     await showBigDialog(context, "Good luck!", 2);
   }
   else{
+    soundNotification(context,"music/noti_marimba.wav", 1);
     await showBigDialog(context, "STUDY MODE", 2);
   }
   Navigator.pushNamed(context, '/page3');
 }
+
 Future<void> restAnnouncement(BuildContext context) async {
   var timerMode = Provider.of<TimerMode>(context, listen: false);
   var musicProvider = Provider.of<MusicProvider>(context, listen: false);
   if(musicProvider.isPanelVisible.value){
     musicProvider.togglePanel();
   }
+  soundNotification(context,"music/noti_happy_bells.wav", 3);
   if(timerMode.completedCycles==0){
   await showBigDialog(context, "Well done!\nYou have ended your studying round", 2);
   await showBigDialog(context, 'You may now get up and relax', 2);
   await showBigDialog(context, 'Go get some water, food\n or to the toilet if needed', 2);
   await showBigDialog(context, 'See you in ${timerMode.initialRestTime.minute}...', 2);
-
   }
-
   else{
     await showBigDialog(context, "REST MODE", 2);
   }
   Navigator.pushNamed(context, '/page4');
+
 }
 Future<void> endAnnouncement(BuildContext context) async {
+  var musicProvider = Provider.of<MusicProvider>(context, listen: false);
+  soundNotification(context,"music/noti_end.wav", 2);
+
   await showBigDialog(context, "Well done!\nYou have ended your session", 2);
   await showBigDialog(context, 'I\'m very proud of your hard work', 2);
   await showBigDialog(context, 'See you soon...', 2);

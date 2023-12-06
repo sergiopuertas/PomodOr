@@ -16,7 +16,6 @@ void initNotifications() async{
   );
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
-
 Future<void> scheduleNotification(Task task) async {
   if (!task.getIfFinished && task.getDate.difference(DateTime.now()).inDays <= 1) {
     var scheduledNotificationDateTime = task.getDate.subtract(Duration(days: 1));
@@ -39,10 +38,38 @@ Future<void> scheduleNotification(Task task) async {
       'La tarea "${task.getName}" expira mañana.', // Cuerpo de la notificación
       scheduledNotificationDateTime, // Fecha y hora para la notificación
       platformChannelSpecifics,
-      androidAllowWhileIdle: true, // Para mostrar la notificación incluso cuando el dispositivo está en modo de bajo consumo
+      androidAllowWhileIdle: true,
     );
   }
 }
+/*
+Future<void> showTimerNotification(DateTime currentTime) async {
+  String formattedTime = '${currentTime.hour.toString().padLeft(2, '0')}:${currentTime.minute.toString().padLeft(2, '0')}:${currentTime.second.toString().padLeft(2, '0')}';
+
+  var androidDetails = AndroidNotificationDetails(
+    'task_channel', // ID del canal
+    'Session running', // Título del canal
+    'Your session timer', // Descripción del canal
+    importance: Importance.max,
+    priority: Priority.high,
+    /*ongoing: true,
+    showWhen: false,*/
+  );
+
+  var iosDetails = IOSNotificationDetails();
+
+  var generalNotificationDetails = NotificationDetails(
+    android: androidDetails,
+    iOS: iosDetails,
+  );
+
+  await flutterLocalNotificationsPlugin.show(
+     DateTime.now().hour*3600 + DateTime.now().minute*60 + DateTime.now().second, // ID de la notificación
+    'Timer', // Título
+    formattedTime, // Cuerpo
+    generalNotificationDetails,
+  );
+}*/
 Future<void> cancelTaskNotification(Task task) async {
   await flutterLocalNotificationsPlugin.cancel(task.hashCode);
 }

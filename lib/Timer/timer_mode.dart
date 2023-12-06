@@ -3,6 +3,7 @@ import 'package:pomodor/auxiliar.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'clock_view.dart';
+import 'package:pomodor/notifications.dart';
 
 //2 modes => _isWorkMode == true (workMode)
 //           _isWorkMode == false (restMode)

@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 class MusicProvider extends InheritedWidget {
   final player = AudioPlayer();
+  final notiplayer = AudioPlayer();
   ValueNotifier<Duration> totalDuration = ValueNotifier(Duration.zero);
   ValueNotifier<Duration> position = ValueNotifier(Duration.zero);
   ValueNotifier<int> _currentSongIndex = ValueNotifier(0);
@@ -20,7 +21,7 @@ class MusicProvider extends InheritedWidget {
     'music/morning-garden.mp3',
     'music/ocean-choir.mp3',
     'music/one-more-step.mp3',
-    'music/please-calm-my-mind.mp3',
+    'music/calm-my-mind.mp3',
     'music/pomodor.mp3',
     'music/science-doc.mp3',
     'music/sleepy-cat.mp3',
@@ -74,9 +75,11 @@ class MusicProvider extends InheritedWidget {
     } else {
       _currentSongIndex.value = 0;
     }
-    player.stop();
-    await player.play(AssetSource(_songList[_currentSongIndex.value]));
-    playing.value = true;
+    if(playing.value){
+      player.stop();
+      await player.play(AssetSource(_songList[_currentSongIndex.value]));
+      playing.value = true;
+    }
   }
 
   Future<void> previousSong() async{
@@ -90,10 +93,11 @@ class MusicProvider extends InheritedWidget {
         player.seek(Duration(seconds: 0));
       }
     }
-    player.stop();
-    await player.play(AssetSource(_songList[_currentSongIndex.value]));
-    playing.value = true;
-
+    if(playing.value){
+      player.stop();
+      await player.play(AssetSource(_songList[_currentSongIndex.value]));
+      playing.value = true;
+    }
   }
   @override
   void dispose() {
@@ -166,7 +170,7 @@ class _MusicState extends State<Music> {
                   children: [
                     if(isPanelVisible)
                       Container(
-                        color: Colors.transparent, // semi-transparente para ver efecto
+                        color: Colors.transparent.withOpacity(0.3),
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height,
                       ),

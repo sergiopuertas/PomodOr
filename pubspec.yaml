@@ -75,7 +75,7 @@ flutter:
     - assets/music/morning-garden.mp3
     - assets/music/ocean-choir.mp3
     - assets/music/one-more-step.mp3
-    - assets/music/please-calm-my-mind.mp3
+    - assets/music/calm-my-mind.mp3
     - assets/music/pomodor.mp3
     - assets/music/science-doc.mp3
     - assets/music/sleepy-cat.mp3
@@ -84,6 +84,11 @@ flutter:
     - assets/music/valley-of-hope.mp3
     - assets/music/weekend-vibes.mp3
     - assets/music/you-have-it.mp3
+    - assets/music/noti_marimba.wav
+    - assets/music/noti_reveal.wav
+    - assets/music/noti_software.wav
+    - assets/music/noti_happy_bells.wav
+    - assets/music/noti_end.wav
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

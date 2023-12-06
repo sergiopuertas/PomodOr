@@ -7,6 +7,7 @@ import 'package:pomodor/toDoList/TaskList.dart';
 import 'package:pomodor/toDoList/PopUps/submitButton.dart';
 import 'package:pomodor/auxiliar.dart';
 import 'package:pomodor/music.dart';
+import 'package:pomodor/notifications.dart';
 
 class Home extends StatelessWidget{
   const Home({super.key});
