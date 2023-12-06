@@ -81,14 +81,18 @@ class _WorkTimeState extends State<WorkTime> {
                   );
                 },
               ),
-              title:
-              Text(
-                'Work!',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30
-                ),
-              ),
+              title: Row(
+                children: [
+                  SizedBox(width: MediaQuery.of(context).size.width*0.235),
+                  Text(
+                    'Work!',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30
+                    ),
+                  ),
+                ],
+              )
             ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

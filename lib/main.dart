@@ -9,12 +9,12 @@ import 'package:pomodor/music.dart';
 import 'toDoList/TaskList.dart';
 import 'notifications.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initNotifications();
+  //initNotifications();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(Pomodor());
   });

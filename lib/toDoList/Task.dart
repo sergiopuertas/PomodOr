@@ -328,10 +328,10 @@ class Task {
     }
     void toggleFinished() {
       if(!_finished){
-        cancelTaskNotification(this);
+        //cancelTaskNotification(this);
       }
       else{
-        scheduleNotification(this);
+        //scheduleNotification(this);
       }
       _finished = !_finished;
     }
