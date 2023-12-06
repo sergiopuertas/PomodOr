@@ -33,7 +33,7 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
                     ),
                   ),
                   onPressed: () {
-                    timerMode.setTimes(1, 1);
+                    timerMode.setTimes(workMinutes, restMinutes);
                     timerMode.setNumCycles(selectedCycles);
                     timerMode.startSession();
                     workAnnouncement(context);
@@ -60,15 +60,16 @@ class _TimeSelectionScreenState extends State<TimeSelectionScreen> {
             toolbarHeight:  MediaQuery.of(context).size.height/6,
             flexibleSpace: Column(
               children: <Widget>[
-                const Spacer(),
-                Text(
-                  'CHOOSE THE TIME\nDISTRIBUTION',
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                Center(
+                  child: Text(
+                    '\n\nCHOOSE THE TIME\nDISTRIBUTION',
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ],

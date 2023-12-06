@@ -20,7 +20,8 @@ class TaskChoosing extends StatelessWidget {
         Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            title: Column(
+            title: Center(
+              child: Column(
                 children: <Widget>[
                   Text(
                     'CHOOSE THE TASKS',
@@ -43,7 +44,9 @@ class TaskChoosing extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
             ),
+
             elevation: 0,
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,

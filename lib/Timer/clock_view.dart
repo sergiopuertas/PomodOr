@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pomodor/Timer/timer_mode.dart';
 import 'package:pomodor/screens/time_selection_screen.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +29,7 @@ class _ClockViewState extends State<ClockView> {
   int selectedMinutes = 0;
   int selectedSeconds = 0;
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+//FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {

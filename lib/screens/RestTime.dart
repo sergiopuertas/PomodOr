@@ -79,12 +79,18 @@ class _RestTimeState extends State<RestTime> {
                   );
                 },
               ),
-              title: Text(
-                'Rest!',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
+              title: Row(
+                    children: [
+                    SizedBox(width: MediaQuery.of(context).size.width*0.235),
+                    Text(
+                      'Rest!',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30
+                      ),
+                    ),
+                ],
+              )
             ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,

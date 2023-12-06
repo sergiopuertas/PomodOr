@@ -35,7 +35,7 @@ dependencies:
   intl: ^0.18.1
   provider: ^6.0.1
   shared_preferences: ^2.0.15
-  flutter_local_notifications: ^8.2.0
+  #flutter_local_notifications: ^8.2.0
   audioplayers: ^5.2.1
 
 dev_dependencies:
@@ -85,8 +85,6 @@ flutter:
     - assets/music/weekend-vibes.mp3
     - assets/music/you-have-it.mp3
     - assets/music/noti_marimba.wav
-    - assets/music/noti_reveal.wav
-    - assets/music/noti_software.wav
     - assets/music/noti_happy_bells.wav
     - assets/music/noti_end.wav
 
